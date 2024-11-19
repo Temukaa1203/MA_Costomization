@@ -44,11 +44,13 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
                 field("Transfer-from Code"; Rec."Transfer-from Code")
                 {
                     ApplicationArea = all;
+                    ShowMandatory = true;
                 }
 
                 field("Transfer-to Code"; Rec."Transfer-to Code")
                 {
                     ApplicationArea = all;
+                    ShowMandatory = true;
                 }
                 field("Return Code"; rec."Return Code")
                 {
@@ -69,7 +71,6 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
                 ApplicationArea = All;
                 Caption = 'Create Transfer Order';
                 Image = TransferOrder;
-
                 trigger OnAction()
                 var
                     TransferOrder: Record "Transfer Header";

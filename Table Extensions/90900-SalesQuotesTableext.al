@@ -25,6 +25,8 @@ tableextension 90900 SalesQuoteHeaderExt extends "Sales Header"
         field(90903; "Return Code"; Code[10])
         {
             Caption = 'Return Code';
+            TableRelation = "Return Reason";
+            NotBlank = true;
             DataClassification = ToBeClassified;
         }
     }
