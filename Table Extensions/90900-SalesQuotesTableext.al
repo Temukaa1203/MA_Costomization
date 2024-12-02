@@ -19,8 +19,8 @@ tableextension 90900 SalesQuoteHeaderExt extends "Sales Header"
             DataClassification = ToBeClassified;
             Caption = 'Order Type';
             Editable = true;
-            OptionCaption = 'SALES,TRANSFER';
-            OptionMembers = "SALES","TRANSFER";
+            OptionCaption = 'SALES,TRANSFER RETURN,TRANSFER,SALES RETURN';
+            OptionMembers = "SALES","TRANSFER RETURN","TRANSFER","SALES RETURN";
         }
         field(90903; "Return Code"; Code[10])
         {
