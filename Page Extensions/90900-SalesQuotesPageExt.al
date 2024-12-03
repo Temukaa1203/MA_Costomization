@@ -4,12 +4,27 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
     {
         addlast(General)
         {
-            field("Order Type"; rec."Order Type")
+            field("Order Type Transfer"; rec."Order Type Transfer")
             {
+                Caption = 'Order Type(Transfer)';
                 ShowMandatory = true;
                 Editable = true;
                 ApplicationArea = All;
-                ToolTip = 'Order Type';
+                ToolTip = 'Order Type(Transfer)';
+                trigger OnValidate()
+                begin
+                    InitializeVariables();
+                    SetTransferFromtoCode(); // Call to set Transfer-from Code when page is opened.
+                end;
+
+            }
+            field("Order Type Sales"; rec."Order Type Sales")
+            {
+                Caption = 'Order Type(Sales)';
+                ShowMandatory = true;
+                Editable = true;
+                ApplicationArea = All;
+                ToolTip = 'Order Type(Sales)';
                 trigger OnValidate()
                 begin
                     InitializeVariables();
@@ -279,15 +294,26 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
 
     local procedure InitializeVariables()
     begin
-        case rec."Order Type" of
-            rec."Order Type"::"SALES":
-                SetFieldsVisible3(true);
-            rec."Order Type"::"SALES RETURN":
-                SetFieldsVisible1(true);
-            rec."Order Type"::"TRANSFER RETURN":
+        case rec."Order Type Transfer" of
+            rec."Order Type Transfer"::"TRANSFER RETURN":
                 SetFieldsVisible(true);
-            rec."Order Type"::"TRANSFER":
+            rec."Order Type Transfer"::"TRANSFER":
                 SetFieldsVisible2(true);
+        end;
+
+    end;
+
+    local procedure InitializeVariables1()
+    begin
+        case rec."Order Type Sales" of
+            rec."Order Type Sales"::"SALES":
+                SetFieldsVisible3(true);
+            rec."Order Type Sales"::"SALES RETURN":
+                SetFieldsVisible1(true);
+        // rec."Order Type"::"TRANSFER RETURN":
+        //     SetFieldsVisible(true);
+        // rec."Order Type"::"TRANSFER":
+        //     SetFieldsVisible2(true);
         end;
 
     end;
@@ -324,7 +350,7 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
     var
         Customer: Record "Customer";
     begin
-        if rec."Order Type" = rec."Order Type"::"TRANSFER RETURN" then begin
+        if rec."Order Type Transfer" = rec."Order Type Transfer"::"TRANSFER RETURN" then begin
             if rec."Sell-to Customer no." <> '' then begin
                 // Get the customer record based on the customer number
                 if Customer.Get(rec."Sell-to Customer no.") then begin
@@ -334,7 +360,7 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
             end;
             rec."Transfer-to Code" := 'PP200'
         end;
-        if rec."Order Type" = rec."Order Type"::"TRANSFER" then begin
+        if rec."Order Type Transfer" = rec."Order Type Transfer"::"TRANSFER" then begin
             if rec."Sell-to Customer no." <> '' then begin
                 // Get the customer record based on the customer number
                 if Customer.Get(rec."Sell-to Customer no.") then begin

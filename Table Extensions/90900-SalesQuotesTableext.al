@@ -14,13 +14,23 @@ tableextension 90900 SalesQuoteHeaderExt extends "Sales Header"
             TableRelation = Location where("Use As In-Transit" = const(false));
             DataClassification = CustomerContent;
         }
-        field(90902; "Order Type"; Option)
+        field(90902; "Order Type Transfer"; Option)
         {
             DataClassification = ToBeClassified;
             Caption = 'Order Type';
             Editable = true;
-            OptionCaption = 'SALES,TRANSFER RETURN,TRANSFER,SALES RETURN';
-            OptionMembers = "SALES","TRANSFER RETURN","TRANSFER","SALES RETURN";
+            // OptionCaption = 'SALES,TRANSFER RETURN,TRANSFER,SALES RETURN';
+            // OptionMembers = "SALES","TRANSFER RETURN","TRANSFER","SALES RETURN";
+            OptionCaption = 'TRANSFER,TRANSFER RETURN';
+            OptionMembers = "TRANSFER","TRANSFER RETURN";
+        }
+        field(90904; "Order Type Sales"; Option)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Order Type';
+            Editable = true;
+            OptionCaption = 'SALES,SALES RETURN';
+            OptionMembers = "SALES","SALES RETURN";
         }
         field(90903; "Return Code"; Code[10])
         {

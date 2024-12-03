@@ -8,6 +8,14 @@ tableextension 90902 customerlocationext extends Customer
             DataClassification = ToBeClassified;
             TableRelation = Location;
         }
+        field(90901; "Customer Type"; Option)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Customer Type';
+            Editable = true;
+            OptionCaption = 'Agent,Company,Intercompany,Person,Internal';
+            OptionMembers = "Agent","Company","Intercompany","Person","Internal";
+        }
     }
 
     keys
