@@ -4,27 +4,12 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
     {
         addlast(General)
         {
-            field("Order Type Transfer"; rec."Order Type Transfer")
+            field("Order Type"; rec."Order Type")
             {
-                Caption = 'Order Type(Transfer)';
                 ShowMandatory = true;
                 Editable = true;
                 ApplicationArea = All;
-                ToolTip = 'Order Type(Transfer)';
-                trigger OnValidate()
-                begin
-                    InitializeVariables();
-                    SetTransferFromtoCode(); // Call to set Transfer-from Code when page is opened.
-                end;
-
-            }
-            field("Order Type Sales"; rec."Order Type Sales")
-            {
-                Caption = 'Order Type(Sales)';
-                ShowMandatory = true;
-                Editable = true;
-                ApplicationArea = All;
-                ToolTip = 'Order Type(Sales)';
+                ToolTip = 'Order Type';
                 trigger OnValidate()
                 begin
                     InitializeVariables();
@@ -103,6 +88,7 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
                     TransferOrder.Init(); // Set appropriate fields
                     TransferOrder."Transfer-to Code" := rec."Transfer-to Code"; // Specify the target location
                     TransferOrder."Transfer-from Code" := rec."Transfer-from Code";
+                    TransferOrder."SQ no" := rec."No.";
                     TransferOrder."Transfer-from Name" := Location.Name;
                     TransferOrder."Transfer-from Name 2" := Location."Name 2";
                     TransferOrder."Transfer-from Address" := Location.Address;
@@ -129,7 +115,6 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
                     SalesQuoteLine.SetRange("Document No.", rec."No.");
                     if SalesQuoteLine.FindSet() then begin
                         repeat
-
                             TransferOrderLine.Init(); // Initialize new line record
                             TransferOrderLine."Document No." := TransferOrder."No."; // Link to Transfer Order
                             TransferOrderLine."Item No." := SalesQuoteLine."No."; // Correctly reference Item No.
@@ -294,26 +279,15 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
 
     local procedure InitializeVariables()
     begin
-        case rec."Order Type Transfer" of
-            rec."Order Type Transfer"::"TRANSFER RETURN":
-                SetFieldsVisible(true);
-            rec."Order Type Transfer"::"TRANSFER":
-                SetFieldsVisible2(true);
-        end;
-
-    end;
-
-    local procedure InitializeVariables1()
-    begin
-        case rec."Order Type Sales" of
-            rec."Order Type Sales"::"SALES":
+        case rec."Order Type" of
+            rec."Order Type"::"SALES":
                 SetFieldsVisible3(true);
-            rec."Order Type Sales"::"SALES RETURN":
+            rec."Order Type"::"SALES RETURN":
                 SetFieldsVisible1(true);
-        // rec."Order Type"::"TRANSFER RETURN":
-        //     SetFieldsVisible(true);
-        // rec."Order Type"::"TRANSFER":
-        //     SetFieldsVisible2(true);
+            rec."Order Type"::"TRANSFER RETURN":
+                SetFieldsVisible(true);
+            rec."Order Type"::"TRANSFER":
+                SetFieldsVisible2(true);
         end;
 
     end;
@@ -350,7 +324,7 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
     var
         Customer: Record "Customer";
     begin
-        if rec."Order Type Transfer" = rec."Order Type Transfer"::"TRANSFER RETURN" then begin
+        if rec."Order Type" = rec."Order Type"::"TRANSFER RETURN" then begin
             if rec."Sell-to Customer no." <> '' then begin
                 // Get the customer record based on the customer number
                 if Customer.Get(rec."Sell-to Customer no.") then begin
@@ -360,7 +334,7 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
             end;
             rec."Transfer-to Code" := 'PP200'
         end;
-        if rec."Order Type Transfer" = rec."Order Type Transfer"::"TRANSFER" then begin
+        if rec."Order Type" = rec."Order Type"::"TRANSFER" then begin
             if rec."Sell-to Customer no." <> '' then begin
                 // Get the customer record based on the customer number
                 if Customer.Get(rec."Sell-to Customer no.") then begin

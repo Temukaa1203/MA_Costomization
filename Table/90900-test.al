@@ -1,29 +1,15 @@
-// table 90900 "Deliveryman"
+// table 90900 "OptionTable"
 // {
 //     DataClassification = ToBeClassified;
 
 //     fields
 //     {
-//         field(1; "User Name"; code[50])
+//         field(1; "OptionID"; Integer)
 //         {
 //             DataClassification = ToBeClassified;
 //         }
 
-//         field(2; "Full Name"; Text[50])
-//         {
-//             DataClassification = ToBeClassified;
-//         }
-
-//         field(3; "Position"; Text[50])
-//         {
-//             DataClassification = ToBeClassified;
-//         }
-
-//         field(4; "Phone Number"; Text[20])
-//         {
-//             DataClassification = ToBeClassified;
-//         }
-//         field(5; "deliveryman No."; Text[20])
+//         field(2; "OptionName"; Text[100])
 //         {
 //             DataClassification = ToBeClassified;
 //         }
@@ -32,7 +18,7 @@
 
 //     keys
 //     {
-//         key(PK; "deliveryman no.")
+//         key(PK; "OptionID")
 //         {
 //             Clustered = true;
 //         }

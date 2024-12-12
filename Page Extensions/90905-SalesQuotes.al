@@ -4,11 +4,7 @@ pageextension 90905 salesquoteordertypeext extends "Sales Quotes"
     {
         addafter("Sell-to Contact")
         {
-            field("Order Type Transfer"; Rec."Order Type Transfer")
-            {
-                ApplicationArea = All;
-            }
-            field("Order Type Sales"; Rec."Order Type Sales")
+            field("Order Type"; Rec."Order Type")
             {
                 ApplicationArea = All;
             }
