@@ -6,7 +6,7 @@
             "request": "launch",
             "type": "al",
             "environmentType": "Sandbox",
-            "environmentName": "API-PP",
+            "environmentName": "Sand1225",
             "startupObjectId": 9300,
             "startupObjectType": "Page",
             "breakOnError": "All",

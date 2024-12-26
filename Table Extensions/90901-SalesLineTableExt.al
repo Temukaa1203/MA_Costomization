@@ -8,7 +8,6 @@ tableextension 90901 SalesLine_ReturnCode extends "Sales Line"
             TableRelation = "Return Reason";
             DataClassification = ToBeClassified;
             Editable = true;
-
         }
     }
 

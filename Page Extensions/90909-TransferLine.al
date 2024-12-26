@@ -1,18 +1,12 @@
-pageextension 90907 transheadext extends "Transfer Order"
+pageextension 90909 translineext extends "Transfer Order Subform"
 {
     layout
     {
-        addlast(General)
+        addafter(Quantity)
         {
-            field("SQ no"; Rec."SQ no")
-            {
-                ApplicationArea = all;
-                Editable = false;
-            }
             field("Return Code"; Rec."Return Code")
             {
                 ApplicationArea = all;
-                Editable = false;
             }
         }
     }

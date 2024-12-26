@@ -1,17 +1,13 @@
-tableextension 90903 transheadext extends "Transfer Header"
+tableextension 90905 transLineext extends "Transfer Line"
 {
     fields
     {
-        field(90900; "SQ no"; code[20])
-        {
-            DataClassification = ToBeClassified;
-        }
-        field(90901; "Return Code"; code[10])
+        field(90900; "Return Code"; code[10])
         {
             Caption = 'Return Code';
             TableRelation = "Return Reason";
-            Editable = false;
             DataClassification = ToBeClassified;
+            Editable = true;
         }
     }
 
