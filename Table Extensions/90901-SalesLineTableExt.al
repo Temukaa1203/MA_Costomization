@@ -23,6 +23,7 @@ tableextension 90901 SalesLine_ReturnCode extends "Sales Line"
     trigger OnInsert()
     var
         SalesQuoteHeader: Record "Sales Header";
+        items: record Item;
     begin
         // If the "Return Code" is not already set, use the value from the "Sales Header"
         if "Return Code" = '' then begin

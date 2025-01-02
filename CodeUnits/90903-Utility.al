@@ -8,6 +8,10 @@ codeunit 90903 PP_Utility
         maketransferorder: Codeunit TransferOrderCreator;
         makeSalesReturnOrder: codeunit SalesReturnOrderProcessor;
         SalesPerson: Record "Salesperson/Purchaser";
+        sqno: code[20];
+        salesheaderaddress: text[100];
+        InStream: InStream;
+        OutStream: OutStream;
     begin
         SalesHeader.Reset();
         SalesHeader.SetFilter("Document Type", '=%1', SalesHeader."Document Type"::Quote);
@@ -15,52 +19,74 @@ codeunit 90903 PP_Utility
         // SalesHeader.SetFilter("Check Document Type", '=%1', SalesHeader."Check Document Type"::" ");
         // SalesHeader.SetFilter("Promotion Check Status", '<>%1', SalesHeader."Promotion Check Status"::" ");
 
-        if SalesHeader.Find('-') then
+        if SalesHeader.Find('-') then begin
             repeat
-                if Customer.Get(SalesHeader."Sell-to Customer No.") and (Customer.Blocked = Customer.Blocked::" ") and (SalesHeader."Order Type" = SalesHeader."Order Type"::"SALES") then begin
-                    // if SalesPerson.Get(SalesHeader."Salesperson Code") and SalesPerson."Sales-Quote to Order" then begin
-                    SalesQuoteToOrder.Run(SalesHeader);
-                    Commit();
+                if SalesHeader."Order Type" = SalesHeader."Order Type"::"SALES" then begin
+                    if Customer.Get(SalesHeader."Sell-to Customer No.") and (Customer.Blocked = Customer.Blocked::" ") then begin
+                        // if SalesPerson.Get(SalesHeader."Salesperson Code") and SalesPerson."Sales-Quote to Order" then begin
+                        SalesQuoteToOrder.Run(SalesHeader);
+                        // sqno := SalesHeader."No.";
+                        // SalesHeaderAddress := SalesHeader."Sell-to Address";
+                        // SalesHeader.Reset();
+                        // SalesHeader.SetRange("Quote No.", sqno);
+                        // if SalesHeader.FindSet() then begin
+                        //     Message(SalesHeader."No.");
+                        //     SalesHeader.Status := SalesHeader.Status::Released;
+                        //     // SalesHeader."Work Description".CreateOutStream(OutStream);
+                        //     // OutStream.WriteText(salesheaderaddress);
+                        //     //// InStream.ReadText(salesheaderaddress);
+                        //     SalesHeader.Modify();
+                        // end;
+                        Commit();
+                    end;
                 end;
+            until SalesHeader.Next() = 0;
+        end;
+
+
+        SalesHeader.Reset();
+        SalesHeader.SetFilter("Document Type", '=%1', SalesHeader."Document Type"::Quote);
+        SalesHeader.SetFilter(Status, '=%1', SalesHeader.Status::Released);
+        if SalesHeader.Find('-') then begin
+            repeat
                 if Customer.Get(SalesHeader."Sell-to Customer No.") and (Customer.Blocked = Customer.Blocked::" ") and (SalesHeader."Order Type" = SalesHeader."Order Type"::TRANSFER) then begin
                     // if SalesPerson.Get(SalesHeader."Salesperson Code") and SalesPerson."Sales-Quote to Order" then begin
                     maketransferorder.CreateTransferOrder(SalesHeader);
                     Commit();
-                    SalesHeader.Delete();
                 end;
-                if Customer.Get(SalesHeader."Sell-to Customer No.") and (Customer.Blocked = Customer.Blocked::" ") and (SalesHeader."Order Type" = SalesHeader."Order Type"::"SALES RETURN") and (SalesHeader.FindSet()) then begin
+                if Customer.Get(SalesHeader."Sell-to Customer No.") and (Customer.Blocked = Customer.Blocked::" ") and (SalesHeader."Order Type" = SalesHeader."Order Type"::"SALES RETURN") then begin
                     // if SalesPerson.Get(SalesHeader."Salesperson Code") and SalesPerson."Sales-Quote to Order" then begin
                     makeSalesReturnOrder.CreateSalesReturnOrder(SalesHeader);
                     Commit();
-                    SalesHeader.Delete();
                 end;
-                if Customer.Get(SalesHeader."Sell-to Customer No.") and (Customer.Blocked = Customer.Blocked::" ") and (SalesHeader."Order Type" = SalesHeader."Order Type"::"TRANSFER RETURN") and (SalesHeader.FindSet()) then begin
+                if Customer.Get(SalesHeader."Sell-to Customer No.") and (Customer.Blocked = Customer.Blocked::" ") and (SalesHeader."Order Type" = SalesHeader."Order Type"::"TRANSFER RETURN") then begin
                     // if SalesPerson.Get(SalesHeader."Salesperson Code") and SalesPerson."Sales-Quote to Order" then begin
                     maketransferorder.CreateTransferOrder(SalesHeader);
                     Commit();
-                    SalesHeader.Delete();
                 end;
-
+                SalesHeader.Delete();
             until SalesHeader.Next() = 0;
+        end;
+
     end;
 
 
 
 
 
-    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Quote to Order", 'OnAfterOnRun', '', false, false)]
-    // local procedure OnAfterOnRun(var SalesHeader: Record "Sales Header"; var SalesOrderHeader: Record "Sales Header")
-    // var
-    //     ReleaseSalesDoc: Codeunit "Release Sales Document";
-    // begin
-    //     ReleaseSalesDoc.PerformManualRelease(SalesOrderHeader);
-    // end;
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Quote to Order", 'OnAfterOnRun', '', false, false)]
+    local procedure OnAfterOnRun(var SalesHeader: Record "Sales Header"; var SalesOrderHeader: Record "Sales Header")
+    var
+        ReleaseSalesDoc: Codeunit "Release Sales Document";
+    begin
+        ReleaseSalesDoc.PerformManualRelease(SalesOrderHeader);
+    end;
 
-    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Quote to Order", 'OnBeforeModifySalesOrderHeader', '', false, false)]
-    // local procedure OnBeforeModifySalesOrderHeader(var SalesOrderHeader: Record "Sales Header"; SalesQuoteHeader: Record "Sales Header")
-    // begin
-    //     SalesOrderHeader."Posting Date" := SalesQuoteHeader."Shipment Date";
-    // end;
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Quote to Order", 'OnBeforeModifySalesOrderHeader', '', false, false)]
+    local procedure OnBeforeModifySalesOrderHeader(var SalesOrderHeader: Record "Sales Header"; SalesQuoteHeader: Record "Sales Header")
+    begin
+        SalesOrderHeader."Posting Date" := SalesQuoteHeader."Shipment Date";
+    end;
 
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Release Sales Document", 'OnBeforePerformManualReleaseProcedure', '', false, false)]
@@ -70,6 +96,7 @@ codeunit 90903 PP_Utility
         "Sales Info-Pane Management": Codeunit "Sales Info-Pane Management";
         CheckQty: Decimal;
         Item: Record Item;
+        cust: Record customer;
     begin
         if (SalesHeader."Document Type" = SalesHeader."Document Type"::Quote) then begin
             SalesLine.Reset();
@@ -87,7 +114,19 @@ codeunit 90903 PP_Utility
                             Error('Item No.:' + SalesLine."No." + ' Таны оруулсан тоо ширхэг боломжит хэмжээнээс их байна. Боломжит тоо ширхэг (' + Format(CheckQty) + ')');
                     end;
                 until SalesLine.Next() = 0;
-
+            if (SalesHeader."Order Type" = SalesHeader."Order Type"::TRANSFER) or (SalesHeader."Order Type" = SalesHeader."Order Type"::"TRANSFER RETURN") then begin
+                cust.get(SalesHeader."Sell-to Customer No.");
+                if (cust."Customer Type" <> cust."Customer Type"::Agent) and (cust."Customer Type" <> cust."Customer Type"::"Нэрийн Дэлгүүр") then begin
+                    Error('Агентын хөдөлгөөн хийх боломжгүй харилцагч байна. Customer Type эсвэл Order Type шалгана уу.');
+                end;
+            end else begin
+                if (SalesHeader."Order Type" = SalesHeader."Order Type"::SALES) or (SalesHeader."Order Type" = SalesHeader."Order Type"::"SALES RETURN") then begin
+                    cust.get(SalesHeader."Sell-to Customer No.");
+                    if (cust."Customer Type" = cust."Customer Type"::Agent) or (cust."Customer Type" = cust."Customer Type"::"Нэрийн Дэлгүүр") then begin
+                        Error('Борлуулалтын хөдөлгөөн хийх боломжгүй харилцагч байна. Customer Type эсвэл Order Type шалгана уу.');
+                    end;
+                end
+            end;
         end;
     end;
 

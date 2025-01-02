@@ -275,6 +275,22 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
                 end;
             }
         }
+        // modify(Release)
+        // {
+        //     trigger OnBeforeAction()
+        //     var
+        //         cust: record Customer;
+        //     begin
+        //         cust.get(rec."Sell-to Customer No.");
+        //         if cust.FindSet() then begin
+        //             if (cust."Customer Type" <> cust."Customer Type"::Agent) and ((rec."Order Type" = rec."Order Type"::TRANSFER) or (rec."Order Type" = rec."Order Type"::"TRANSFER RETURN")) then begin
+        //                 error('Агентийн хөдөлгөөн хийх боломжгүй харилцагч байна.');
+        //                 // Message((Format(cust."Customer Type")));
+        //                 // Message((Format(rec."Order Type")));
+        //             end;
+        //         end;
+        //     end;
+        // }
     }
 
 

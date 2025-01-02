@@ -6,7 +6,7 @@
             "request": "launch",
             "type": "al",
             "environmentType": "Sandbox",
-            "environmentName": "Sand1225",
+            "environmentName": "PPEE",
             "startupObjectId": 9300,
             "startupObjectType": "Page",
             "breakOnError": "All",

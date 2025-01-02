@@ -79,6 +79,8 @@ codeunit 90904 "SalesReturnOrderProcessor"
                 SalesOrderLine."Location Code" := SalesQuoteLine."Location Code";
                 SalesOrderLine.Insert();
             until SalesQuoteLine.Next() = 0;
+            // SalesReturnOrder.Status := SalesReturnOrder.Status::Released;
+            SalesReturnOrder.Modify();
             // NewReturnOrderNo := SalesReturnOrder."No.";
             // // Return the created SalesReturnOrder document for further processing if needed
             // MESSAGE('Sales Return Order created with No: %1', NewReturnOrderNo);

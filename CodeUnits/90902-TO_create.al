@@ -7,35 +7,100 @@ codeunit 90902 "TransferOrderCreator"
         TransferOrderLine: Record "Transfer Line";
         Location: Record Location;
         NewTransferOrderNo: Code[20];
+        cust: Record Customer;
     begin
         // Get the location based on the "Transfer-from Code"
-        if not Location.Get(SalesQuoteHeader."Transfer-from Code") then
-            Error('Location not found for Transfer-from Code %1', SalesQuoteHeader."Transfer-from Code");
+        // if not Location.Get(SalesQuoteHeader."Transfer-from Code") then
+        //     Error('Location not found for Transfer-from Code %1', SalesQuoteHeader."Transfer-from Code");
 
         // Initialize the Transfer Order header
         TransferOrder.Init();
         TransferOrder."Transfer-to Code" := SalesQuoteHeader."Transfer-to Code";
         TransferOrder."Transfer-from Code" := SalesQuoteHeader."Transfer-from Code";
+        TransferOrder."Return Code" := SalesQuoteHeader."Return Code";
         TransferOrder."SQ no" := SalesQuoteHeader."No.";
         TransferOrder."In-Transit Code" := 'IN-TRANSIT';
-        TransferOrder."Transfer-from Name" := Location.Name;
-        TransferOrder."Transfer-from Name 2" := Location."Name 2";
-        TransferOrder."Transfer-from Address" := Location.Address;
-        TransferOrder."Transfer-from Address 2" := Location."Address 2";
-        TransferOrder."Transfer-from Post Code" := Location."Post Code";
-        TransferOrder."Transfer-from City" := Location.City;
-        TransferOrder."Transfer-from County" := Location.County;
-        TransferOrder."Trsf.-from Country/Region Code" := Location."Country/Region Code";
-        TransferOrder."Transfer-from Contact" := Location.Contact;
-        TransferOrder."Transfer-to Name" := Location.Name;
-        TransferOrder."Transfer-to Name 2" := Location."Name 2";
-        TransferOrder."Transfer-to Address" := Location.Address;
-        TransferOrder."Transfer-to Address 2" := Location."Address 2";
-        TransferOrder."Transfer-to Post Code" := Location."Post Code";
-        TransferOrder."Transfer-to City" := Location.City;
-        TransferOrder."Transfer-to County" := Location.County;
-        TransferOrder."Trsf.-to Country/Region Code" := Location."Country/Region Code";
-        TransferOrder."Return Code" := SalesQuoteHeader."Return Code";
+        Location.SetRange(Code, 'PP200');
+        if Location.FindSet() then begin
+            TransferOrder."Transfer-from Name" := Location.Name;
+            TransferOrder."Transfer-from Name 2" := Location."Name 2";
+            TransferOrder."Transfer-from Address" := Location.Address;
+            TransferOrder."Transfer-from Address 2" := Location."Address 2";
+            TransferOrder."Transfer-from Post Code" := Location."Post Code";
+            TransferOrder."Transfer-from City" := Location.City;
+            TransferOrder."Transfer-from County" := Location.County;
+            TransferOrder."Trsf.-from Country/Region Code" := Location."Country/Region Code";
+            TransferOrder."Transfer-from Contact" := Location.Contact;
+        end;
+        cust.Reset();
+        cust.SetRange("No.", SalesQuoteHeader."Sell-to Customer No.");
+        if cust.FindSet() then begin
+            TransferOrder."Transfer-to Name" := cust.Name;
+            TransferOrder."Transfer-to Contact" := cust.Contact;
+            TransferOrder."Transfer-to Name 2" := cust."Name 2";
+            TransferOrder."Transfer-to Address" := cust.Address;
+            TransferOrder."Transfer-to Address 2" := cust."Address 2";
+            TransferOrder."Transfer-to Post Code" := cust."Post Code";
+            TransferOrder."Transfer-to City" := cust.City;
+            TransferOrder."Transfer-to County" := cust.County;
+            TransferOrder."Trsf.-to Country/Region Code" := cust."Country/Region Code";
+        end;
+        // end
+        // else begin
+        //     Message('2', Format(SalesQuoteHeader."Sell-to Customer No."));
+        //     Location.Reset();
+        //     if SalesQuoteHeader."Transfer-to Code" = 'PP200' then begin
+        //         Location.SetRange(Code, SalesQuoteHeader."Transfer-from Code");
+        //         if Location.FindSet() then begin
+        //             TransferOrder."Transfer-to Name" := Location.Name;
+        //             TransferOrder."Transfer-to Name 2" := Location."Name 2";
+        //             TransferOrder."Transfer-to Address" := Location.Address;
+        //             TransferOrder."Transfer-to Address 2" := Location."Address 2";
+        //             TransferOrder."Transfer-to Post Code" := Location."Post Code";
+        //             TransferOrder."Transfer-to City" := Location.City;
+        //             TransferOrder."Transfer-to County" := Location.County;
+        //             TransferOrder."Trsf.-to Country/Region Code" := Location."Country/Region Code";
+        //             TransferOrder."Transfer-to Contact" := Location.Contact;
+        //         end;
+        //         cust.Reset();
+        //         cust.SetRange("No.", SalesQuoteHeader."Sell-to Customer No.");
+        //         if cust.FindSet() then begin
+        //             TransferOrder."Transfer-From Name" := cust.Name;
+        //             TransferOrder."Transfer-From Contact" := cust.Contact;
+        //             TransferOrder."Transfer-From Name 2" := cust."Name 2";
+        //             TransferOrder."Transfer-From Address" := cust.Address;
+        //             TransferOrder."Transfer-From Address 2" := cust."Address 2";
+        //             TransferOrder."Transfer-From Post Code" := cust."Post Code";
+        //             TransferOrder."Transfer-From City" := cust.City;
+        //             TransferOrder."Transfer-From County" := cust.County;
+        //             TransferOrder."Trsf.-From Country/Region Code" := cust."Country/Region Code";
+        //         end;
+        //     end;
+        // Location.SetRange(Code, SalesQuoteHeader."Transfer-from Code");
+        // if Location.FindSet() then begin
+        //     TransferOrder."Transfer-from Name" := Location.Name;
+        //     TransferOrder."Transfer-from Name 2" := Location."Name 2";
+        //     TransferOrder."Transfer-from Address" := Location.Address;
+        //     TransferOrder."Transfer-from Address 2" := Location."Address 2";
+        //     TransferOrder."Transfer-from Post Code" := Location."Post Code";
+        //     TransferOrder."Transfer-from City" := Location.City;
+        //     TransferOrder."Transfer-from County" := Location.County;
+        //     TransferOrder."Trsf.-from Country/Region Code" := Location."Country/Region Code";
+        //     TransferOrder."Transfer-from Contact" := Location.Contact;
+        // end;
+        // Location.Reset();
+        // Location.SetRange(Code, SalesQuoteHeader."Transfer-to Code");
+        // if Location.FindSet() then begin
+        //     TransferOrder."Transfer-to Name" := Location.Name;
+        //     TransferOrder."Transfer-to Contact" := Location.Contact;
+        //     TransferOrder."Transfer-to Name 2" := Location."Name 2";
+        //     TransferOrder."Transfer-to Address" := Location.Address;
+        //     TransferOrder."Transfer-to Address 2" := Location."Address 2";
+        //     TransferOrder."Transfer-to Post Code" := Location."Post Code";
+        //     TransferOrder."Transfer-to City" := Location.City;
+        //     TransferOrder."Transfer-to County" := Location.County;
+        //     TransferOrder."Trsf.-to Country/Region Code" := Location."Country/Region Code";
+        // end;
         // Insert the Transfer Order header
         TransferOrder.Insert(true);
 
@@ -75,7 +140,7 @@ codeunit 90902 "TransferOrderCreator"
                 TransferOrderLine."Transfer-to Code" := TransferOrder."Transfer-to Code";
                 TransferOrderLine."Shipment Date" := TransferOrder."Shipment Date";
                 TransferOrderLine."Receipt Date" := TransferOrder."Receipt Date";
-
+                TransferOrderLine."Product Price" := SalesQuoteLine."Line Amount";
                 // Validate and insert the new line into the Transfer Order
                 TransferOrderLine.Validate(Quantity, SalesQuoteLine.Quantity);
                 TransferOrderLine.Insert();
