@@ -105,15 +105,15 @@ codeunit 90903 PP_Utility
             SalesLine.SetFilter(Type, '=%1', SalesLine.Type::Item);
 
 
-            if SalesLine.find('-') then
-                repeat
-                    Item.Get(SalesLine."No.");
-                    if not Item."Assembly BOM" then begin
-                        CheckQty := "Sales Info-Pane Management".CalcAvailability(SalesLine);
-                        if SalesLine.Quantity > CheckQty then
-                            Error('Item No.:' + SalesLine."No." + ' Таны оруулсан тоо ширхэг боломжит хэмжээнээс их байна. Боломжит тоо ширхэг (' + Format(CheckQty) + ')');
-                    end;
-                until SalesLine.Next() = 0;
+            // if SalesLine.find('-') then
+            //     repeat
+            //         Item.Get(SalesLine."No.");
+            //         if not Item."Assembly BOM" then begin
+            //             CheckQty := "Sales Info-Pane Management".CalcAvailability(SalesLine);
+            //             if SalesLine.Quantity > CheckQty then
+            //                 Error('Item No.:' + SalesLine."No." + ' Таны оруулсан тоо ширхэг боломжит хэмжээнээс их байна. Боломжит тоо ширхэг (' + Format(CheckQty) + ')');
+            //         end;
+            //     until SalesLine.Next() = 0;
             if (SalesHeader."Order Type" = SalesHeader."Order Type"::TRANSFER) or (SalesHeader."Order Type" = SalesHeader."Order Type"::"TRANSFER RETURN") then begin
                 cust.get(SalesHeader."Sell-to Customer No.");
                 if (cust."Customer Type" <> cust."Customer Type"::Agent) and (cust."Customer Type" <> cust."Customer Type"::"Нэрийн Дэлгүүр") then begin
