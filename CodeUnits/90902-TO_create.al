@@ -140,7 +140,8 @@ codeunit 90902 "TransferOrderCreator"
                 TransferOrderLine."Transfer-to Code" := TransferOrder."Transfer-to Code";
                 TransferOrderLine."Shipment Date" := TransferOrder."Shipment Date";
                 TransferOrderLine."Receipt Date" := TransferOrder."Receipt Date";
-                TransferOrderLine."Product Price" := SalesQuoteLine."Line Amount";
+                TransferOrderLine."Product Price" := SalesQuoteLine."Unit Price";
+                TransferOrderLine."line amount" := SalesQuoteLine."Line Amount";
                 // Validate and insert the new line into the Transfer Order
                 TransferOrderLine.Validate(Quantity, SalesQuoteLine.Quantity);
                 TransferOrderLine.Insert();

@@ -9,6 +9,11 @@ tableextension 90901 SalesLine_ReturnCode extends "Sales Line"
             DataClassification = ToBeClassified;
             Editable = true;
         }
+        field(90901; "Standard KG"; Decimal)
+        {
+            Caption = 'Standard KG';
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys
@@ -29,6 +34,11 @@ tableextension 90901 SalesLine_ReturnCode extends "Sales Line"
         if "Return Code" = '' then begin
             if SalesQuoteHeader.Get("Document Type", "Document No.") then begin
                 "Return Code" := SalesQuoteHeader."Return Code"; // Set the Return Code from the header
+            end;
+        end;
+        if "Standard KG" = 0 then begin
+            if items.get("No.") then begin
+                "Standard KG" := items."Standard KG";
             end;
         end;
     end;

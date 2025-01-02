@@ -8,6 +8,10 @@ pageextension 90909 translineext extends "Transfer Order Subform"
             {
                 ApplicationArea = all;
             }
+            // field("Line Amount"; Rec."Line Amount")
+            // {
+            //     ApplicationArea = all;
+            // }
         }
     }
 

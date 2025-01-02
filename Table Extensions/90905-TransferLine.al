@@ -9,6 +9,11 @@ tableextension 90905 transLineext extends "Transfer Line"
             DataClassification = ToBeClassified;
             Editable = true;
         }
+        field(90901; "Line Amount"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            Editable = False;
+        }
     }
 
     keys

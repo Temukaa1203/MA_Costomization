@@ -11,6 +11,11 @@ pageextension 90903 SQ_Subform_ReturnCode extends "Sales Quote Subform"
                 Editable = true;
                 TableRelation = "Return Reason";
             }
+            field("Standard KG"; Rec."Standard KG")
+            {
+                ApplicationArea = all;
+                Editable = true;
+            }
         }
     }
 
