@@ -20,6 +20,18 @@ codeunit 90902 "TransferOrderCreator"
         TransferOrder."Return Code" := SalesQuoteHeader."Return Code";
         TransferOrder."SQ no" := SalesQuoteHeader."No.";
         TransferOrder."In-Transit Code" := 'IN-TRANSIT';
+        TransferOrder."PickPack State Code" := SalesQuoteHeader."PickPack State Code";
+        TransferOrder."PickPack District Code" := SalesQuoteHeader."PickPack District Code";
+        TransferOrder."PickPack quarter Code" := SalesQuoteHeader."PickPack Quarter Code";
+        TransferOrder."PickPack Delivery Type Code" := SalesQuoteHeader."PickPack Delivery Type Code";
+        TransferOrder."PickPack Delivery Name" := SalesQuoteHeader."PickPack Delivery Name";
+        TransferOrder."PickPack Delivery Email" := SalesQuoteHeader."PickPack Delivery email";
+        TransferOrder."PickPack Delivery Type Code" := SalesQuoteHeader."PickPack Delivery Type Code";
+        TransferOrder."PickPack Delivery Phone No." := SalesQuoteHeader."PickPack Delivery Phone No.";
+        TransferOrder."PickPack Item Prepared Date" := SalesQuoteHeader."PickPack Item Prepared Date";
+        TransferOrder."PickPack Message" := SalesQuoteHeader."PickPack Message";
+        TransferOrder."PickPack Order Code" := SalesQuoteHeader."PickPack Order Code";
+        TransferOrder."PickPack Received Date" := SalesQuoteHeader."PickPack Received Date";
         Location.SetRange(Code, 'PP200');
         if Location.FindSet() then begin
             TransferOrder."Transfer-from Name" := Location.Name;
@@ -142,6 +154,7 @@ codeunit 90902 "TransferOrderCreator"
                 TransferOrderLine."Receipt Date" := TransferOrder."Receipt Date";
                 TransferOrderLine."Product Price" := SalesQuoteLine."Unit Price";
                 TransferOrderLine."line amount" := SalesQuoteLine."Line Amount";
+                TransferOrderLine."Standard KG" := SalesQuoteLine."Standard KG";
                 // Validate and insert the new line into the Transfer Order
                 TransferOrderLine.Validate(Quantity, SalesQuoteLine.Quantity);
                 TransferOrderLine.Insert();

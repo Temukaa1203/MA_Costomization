@@ -77,6 +77,7 @@ codeunit 90904 "SalesReturnOrderProcessor"
                 SalesOrderLine."Line Discount %" := SalesQuoteLine."Line Discount %";
                 SalesOrderLine.Validate(Quantity, SalesQuoteLine.Quantity); // 
                 SalesOrderLine."Location Code" := SalesQuoteLine."Location Code";
+                SalesOrderLine."Standard KG" := SalesQuoteLine."Standard KG";
                 SalesOrderLine.Insert();
             until SalesQuoteLine.Next() = 0;
             // SalesReturnOrder.Status := SalesReturnOrder.Status::Released;

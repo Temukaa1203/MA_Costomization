@@ -16,6 +16,19 @@ pageextension 90909 translineext extends "Transfer Order Subform"
             {
                 ApplicationArea = all;
             }
+            field("Standard KG"; Rec."Standard KG")
+            {
+                ApplicationArea = all;
+                Editable = false;
+            }
+        }
+        modify("Item No.")
+        {
+            trigger OnAfterValidate()
+            var
+            begin
+                GetStandKG();
+            end;
         }
     }
 
@@ -23,6 +36,15 @@ pageextension 90909 translineext extends "Transfer Order Subform"
     {
         // Add changes to page actions here
     }
+    local procedure GetStandKG(): Decimal
+    var
+        ItemR: Record Item;
+    begin
+        if ItemR.Get(Rec."Item No.") then begin
+            Rec."Standard KG" := ItemR."Standard KG";
+            Rec.Modify();
+        end;
+    end;
 
     var
         myInt: Integer;

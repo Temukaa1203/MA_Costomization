@@ -14,6 +14,11 @@ tableextension 90905 transLineext extends "Transfer Line"
             DataClassification = ToBeClassified;
             Editable = False;
         }
+        field(90902; "Standard KG"; Decimal)
+        {
+            Caption = 'Standard KG';
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys
