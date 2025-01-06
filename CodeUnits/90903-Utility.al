@@ -25,18 +25,19 @@ codeunit 90903 PP_Utility
                     if Customer.Get(SalesHeader."Sell-to Customer No.") and (Customer.Blocked = Customer.Blocked::" ") then begin
                         // if SalesPerson.Get(SalesHeader."Salesperson Code") and SalesPerson."Sales-Quote to Order" then begin
                         SalesQuoteToOrder.Run(SalesHeader);
-                        // sqno := SalesHeader."No.";
-                        // SalesHeaderAddress := SalesHeader."Sell-to Address";
-                        // SalesHeader.Reset();
-                        // SalesHeader.SetRange("Quote No.", sqno);
-                        // if SalesHeader.FindSet() then begin
-                        //     Message(SalesHeader."No.");
-                        //     SalesHeader.Status := SalesHeader.Status::Released;
-                        //     // SalesHeader."Work Description".CreateOutStream(OutStream);
-                        //     // OutStream.WriteText(salesheaderaddress);
-                        //     //// InStream.ReadText(salesheaderaddress);
-                        //     SalesHeader.Modify();
-                        // end;
+                        sqno := SalesHeader."No.";
+                        SalesHeaderAddress := SalesHeader."Sell-to Address";
+                        SalesHeader.Reset();
+                        SalesHeader.SetRange("Quote No.", sqno);
+                        if SalesHeader.FindSet() then begin
+                            Message(SalesHeader."No.");
+                            // SalesHeader.Status := SalesHeader.Status::Released;
+                            SalesHeader."Work Description".CreateOutStream(OutStream, TEXTENCODING::UTF8);
+                            OutStream.WriteText(salesheaderaddress);
+                            SalesHeader.Status := SalesHeader.Status::Released;
+                            // InStream.ReadText(salesheaderaddress);
+                            SalesHeader.Modify();
+                        end;
                         Commit();
                     end;
                 end;

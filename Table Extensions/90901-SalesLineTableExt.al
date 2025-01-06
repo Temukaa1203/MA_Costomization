@@ -36,11 +36,11 @@ tableextension 90901 SalesLine_ReturnCode extends "Sales Line"
                 "Return Code" := SalesQuoteHeader."Return Code"; // Set the Return Code from the header
             end;
         end;
-        if "Standard KG" = 0 then begin
-            if items.get("No.") then begin
-                "Standard KG" := items."Standard KG";
-            end;
-        end;
+        // if "Standard KG" = 0 then begin
+        //     if items.get("No.") then begin
+        //         "Standard KG" := items."Standard KG";
+        //     end;
+        // end;
     end;
 
     var
