@@ -15,7 +15,10 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
                     InitializeVariables();
                     SetTransferFromtoCode(); // Call to set Transfer-from Code when page is opened.
                 end;
-
+            }
+            field(SystemCreatedBy; GetUserNameFromSecurityId(Rec.SystemCreatedBy))
+            {
+                ApplicationArea = all;
             }
             // field("Transfer-from Code"; Rec."Transfer-from Code")
             // {
@@ -326,6 +329,13 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
 
     end;
 
+    procedure GetUserNameFromSecurityId(UserSecurityID: Guid): Code[50]
+    var
+        User: Record User;
+    begin
+        User.Get(UserSecurityID);
+        exit(User."User Name");
+    end;
 
 
     local procedure SetFieldsVisible(newisvisible: Boolean)

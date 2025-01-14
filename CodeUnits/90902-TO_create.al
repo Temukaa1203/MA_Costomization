@@ -8,6 +8,7 @@ codeunit 90902 "TransferOrderCreator"
         Location: Record Location;
         NewTransferOrderNo: Code[20];
         cust: Record Customer;
+        ReleaseTransferDoc: Codeunit "Release Transfer Document";
     begin
         // Get the location based on the "Transfer-from Code"
         // if not Location.Get(SalesQuoteHeader."Transfer-from Code") then
@@ -160,8 +161,10 @@ codeunit 90902 "TransferOrderCreator"
                 TransferOrderLine.Insert();
             until SalesQuoteLine.Next() = 0;
         end;
-        TransferOrder.Status := TransferOrder.Status::Released;
-        TransferOrder.Modify();
+        CODEUNIT.Run(CODEUNIT::"Release Transfer Document", TransferOrder);
+        Commit();
+        // TransferOrder.Status := TransferOrder.Status::Released;
+        // TransferOrder.Modify();
         // Return the Transfer Order number
         // NewTransferOrderNo := TransferOrder."No."; // Capture the new order number
         // // Optionally, you could return the Transfer Order record, or implement additional logic here
