@@ -4,10 +4,10 @@ pageextension 90911 PQ_SystemcreatedbyExt extends "Purchase Quote"
     {
         addlast(General)
         {
-            field(SystemCreatedBy; GetUserNameFromSecurityId(Rec.SystemCreatedBy))
-            {
-                ApplicationArea = all;
-            }
+            // field(SystemCreatedBy; GetUserNameFromSecurityId(Rec.SystemCreatedBy))
+            // {
+            //     ApplicationArea = all;
+            // }
         }
     }
 
@@ -15,13 +15,13 @@ pageextension 90911 PQ_SystemcreatedbyExt extends "Purchase Quote"
     {
         // Add changes to page actions here
     }
-    procedure GetUserNameFromSecurityId(UserSecurityID: Guid): Code[50]
-    var
-        User: Record User;
-    begin
-        User.Get(UserSecurityID);
-        exit(User."User Name");
-    end;
+    // procedure GetUserNameFromSecurityId(UserSecurityID: Guid): Code[50]
+    // var
+    //     User: Record User;
+    // begin
+    //     User.Get(UserSecurityID);
+    //     exit(User."User Name");
+    // end;
 
     var
         myInt: Integer;

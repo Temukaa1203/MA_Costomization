@@ -24,21 +24,20 @@ codeunit 90903 PP_Utility
                 if SalesHeader."Order Type" = SalesHeader."Order Type"::"SALES" then begin
                     if Customer.Get(SalesHeader."Sell-to Customer No.") and (Customer.Blocked = Customer.Blocked::" ") then begin
                         // if SalesPerson.Get(SalesHeader."Salesperson Code") and SalesPerson."Sales-Quote to Order" then begin
-                        SalesQuoteToOrder.Run(SalesHeader);
-                        sqno := SalesHeader."No.";
-                        SalesHeaderAddress := SalesHeader."Sell-to Address";
-                        SalesHeader.Reset();
-                        SalesHeader.SetRange("Quote No.", sqno);
-                        if SalesHeader.FindSet() then begin
-                            Message(SalesHeader."No.");
-                            // SalesHeader.Status := SalesHeader.Status::Released;
-                            SalesHeader."Work Description".CreateOutStream(OutStream, TEXTENCODING::UTF8);
-                            OutStream.WriteText(salesheaderaddress);
-                            SalesHeader.Status := SalesHeader.Status::Released;
-                            // InStream.ReadText(salesheaderaddress);
-                            SalesHeader.Modify();
+                        if trycreateSO(SalesHeader) then begin
+                            sqno := SalesHeader."No.";
+                            SalesHeaderAddress := SalesHeader."Sell-to Address";
+                            SalesHeader.Reset();
+                            SalesHeader.SetRange("Quote No.", sqno);
+                            if SalesHeader.FindSet() then begin
+                                // SalesHeader.Status := SalesHeader.Status::Released;
+                                SalesHeader."Work Description".CreateOutStream(OutStream, TEXTENCODING::UTF8);
+                                OutStream.WriteText(salesheaderaddress);
+                                SalesHeader.Status := SalesHeader.Status::Released;
+                                // InStream.ReadText(salesheaderaddress);
+                                SalesHeader.Modify();
+                            end;
                         end;
-                        Commit();
                     end;
                 end;
             until SalesHeader.Next() = 0;
@@ -52,8 +51,10 @@ codeunit 90903 PP_Utility
             repeat
                 if Customer.Get(SalesHeader."Sell-to Customer No.") and (Customer.Blocked = Customer.Blocked::" ") and (SalesHeader."Order Type" = SalesHeader."Order Type"::TRANSFER) then begin
                     // if SalesPerson.Get(SalesHeader."Salesperson Code") and SalesPerson."Sales-Quote to Order" then begin
-                    maketransferorder.CreateTransferOrder(SalesHeader);
-                    Commit();
+                    // maketransferorder.CreateTransferOrder(SalesHeader);
+                    // Message(Format());
+                    trycreateTO(SalesHeader)
+                    // trycreateTO(SalesHeader);
                 end;
                 if Customer.Get(SalesHeader."Sell-to Customer No.") and (Customer.Blocked = Customer.Blocked::" ") and (SalesHeader."Order Type" = SalesHeader."Order Type"::"SALES RETURN") then begin
                     // if SalesPerson.Get(SalesHeader."Salesperson Code") and SalesPerson."Sales-Quote to Order" then begin
@@ -62,18 +63,51 @@ codeunit 90903 PP_Utility
                 end;
                 if Customer.Get(SalesHeader."Sell-to Customer No.") and (Customer.Blocked = Customer.Blocked::" ") and (SalesHeader."Order Type" = SalesHeader."Order Type"::"TRANSFER RETURN") then begin
                     // if SalesPerson.Get(SalesHeader."Salesperson Code") and SalesPerson."Sales-Quote to Order" then begin
-                    maketransferorder.CreateTransferOrder(SalesHeader);
-                    Commit();
+                    trycreateTO(SalesHeader)
                 end;
-                SalesHeader.Delete();
+            // SalesHeader.Delete();
             until SalesHeader.Next() = 0;
         end;
 
     end;
 
 
+    [TryFunction]
+    local procedure trycreateTO(var SalesHeader: Record "Sales Header")
+    var
+        maketransferorder: Codeunit TransferOrderCreator;
+        transferorder: Record "Transfer Header";
+    begin
+        if maketransferorder.CreateTransferOrder(SalesHeader) then begin
+            Commit();
+            SalesHeader.Delete()
+        end
+        else begin
+            transferorder.Reset();
+            transferorder.SetRange("SQ no", SalesHeader."No.");
+            if transferorder.FindSet() then begin
+                repeat
+                    // Message('sqnumber: %1, tonumber : %2', transferorder."SQ no", transferorder."No.");
+                    transferorder.Delete();
+                until transferorder.Next() = 0;
+            end;
+        end;
+    end;
 
-
+    [TryFunction]
+    local procedure trycreateSO(var SalesHeader: Record "Sales Header")
+    var
+        SalesQuoteToOrder: Codeunit "Sales-Quote to Order";
+    begin
+        SalesQuoteToOrder.Run(SalesHeader);
+    end;
+    // [TryFunction]
+    // local procedure TrymakeSO(var SalesHeader: Record "Sales Header")
+    // var
+    //     SalesQuoteToOrder: Codeunit "Sales-Quote to Order";
+    // begin
+    //     SalesQuoteToOrder.Run(SalesHeader);
+    // end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Quote to Order", 'OnAfterOnRun', '', false, false)]
     local procedure OnAfterOnRun(var SalesHeader: Record "Sales Header"; var SalesOrderHeader: Record "Sales Header")

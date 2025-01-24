@@ -1,5 +1,6 @@
 codeunit 90902 "TransferOrderCreator"
 {
+    [TryFunction]
     procedure CreateTransferOrder(SalesQuoteHeader: Record "Sales Header")
     var
         TransferOrder: Record "Transfer Header";
@@ -33,6 +34,7 @@ codeunit 90902 "TransferOrderCreator"
         TransferOrder."PickPack Message" := SalesQuoteHeader."PickPack Message";
         TransferOrder."PickPack Order Code" := SalesQuoteHeader."PickPack Order Code";
         TransferOrder."PickPack Received Date" := SalesQuoteHeader."PickPack Received Date";
+        TransferOrder.Validate(TransferOrder."PickPack Not Send", SalesQuoteHeader."PickPack Not Send");
         Location.SetRange(Code, 'PP200');
         if Location.FindSet() then begin
             TransferOrder."Transfer-from Name" := Location.Name;
@@ -85,7 +87,7 @@ codeunit 90902 "TransferOrderCreator"
         //             TransferOrder."Transfer-From Address 2" := cust."Address 2";
         //             TransferOrder."Transfer-From Post Code" := cust."Post Code";
         //             TransferOrder."Transfer-From City" := cust.City;
-        //             TransferOrder."Transfer-From County" := cust.County;
+        //             TransferOrder."Trfdfansfer-From County" := cust.County;
         //             TransferOrder."Trsf.-From Country/Region Code" := cust."Country/Region Code";
         //         end;
         //     end;
@@ -116,7 +118,6 @@ codeunit 90902 "TransferOrderCreator"
         // end;
         // Insert the Transfer Order header
         TransferOrder.Insert(true);
-
         // Loop through the Sales Quote lines and add them to the Transfer Order
         SalesQuoteLine.SetRange("Document No.", SalesQuoteHeader."No.");
         if SalesQuoteLine.FindSet() then begin
@@ -161,14 +162,24 @@ codeunit 90902 "TransferOrderCreator"
                 TransferOrderLine.Insert();
             until SalesQuoteLine.Next() = 0;
         end;
+        //order insert
+        //lineuudara guiged, document no  = insert.no
+        //functseeg garchuul:
+        //false bolchhin bol delete sayni line on parten fnction
+
+        //or
+        // No. gaptai bolchhin bol zuw uu asuuh.
+        //ene function false return bol headeree ustga
         CODEUNIT.Run(CODEUNIT::"Release Transfer Document", TransferOrder);
-        Commit();
+        // Commit();
         // TransferOrder.Status := TransferOrder.Status::Released;
         // TransferOrder.Modify();
         // Return the Transfer Order number
         // NewTransferOrderNo := TransferOrder."No."; // Capture the new order number
         // // Optionally, you could return the Transfer Order record, or implement additional logic here
         // Message('Transfer Order %1 has been created.', NewTransferOrderNo);
+
         // PAGE.RUN(PAGE::"Transfer Order", TransferOrder);
     end;
+
 }

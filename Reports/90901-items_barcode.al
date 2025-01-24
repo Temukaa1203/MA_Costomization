@@ -54,7 +54,7 @@ report 90901 itemBarcodeReport
 
                 // // Encode the data string to the barcode font
                 barcode := BarcodeFontProvider.EncodeFont(Barcode, BarcodeSymbology);
-                Message('Encoded barcode: %1', Barcode);
+                // Message('Encoded barcode: %1', Barcode);
             end;
         }
     }

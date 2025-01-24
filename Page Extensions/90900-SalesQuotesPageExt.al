@@ -16,10 +16,10 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
                     SetTransferFromtoCode(); // Call to set Transfer-from Code when page is opened.
                 end;
             }
-            field(SystemCreatedBy; GetUserNameFromSecurityId(Rec.SystemCreatedBy))
-            {
-                ApplicationArea = all;
-            }
+            // field(SystemCreatedBy; GetUserNameFromSecurityId(Rec.SystemCreatedBy))
+            // {
+            //     ApplicationArea = all;
+            // }
             // field("Transfer-from Code"; Rec."Transfer-from Code")
             // {
 
@@ -278,6 +278,17 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
                 end;
             }
         }
+        modify(MakeOrder)
+        {
+            trigger OnBeforeAction()
+            var
+            begin
+                if (rec."Order Type" = rec."Order Type"::"TRANSFER") or (rec."Order Type" = rec."Order Type"::"TRANSFER RETURN") or (rec."Order Type" = rec."Order Type"::"SALES RETURN") then begin
+                    error('Transfer Order үүсгэнэ үү.')
+                end;
+            end;
+        }
+
         // modify(Release)
         // {
         //     trigger OnBeforeAction()
@@ -329,13 +340,13 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
 
     end;
 
-    procedure GetUserNameFromSecurityId(UserSecurityID: Guid): Code[50]
-    var
-        User: Record User;
-    begin
-        User.Get(UserSecurityID);
-        exit(User."User Name");
-    end;
+    // procedure GetUserNameFromSecurityId(UserSecurityID: Guid): Code[50]
+    // var
+    //     User: Record User;
+    // begin
+    //     User.Get(UserSecurityID);
+    //     exit(User."User Name");
+    // end;
 
 
     local procedure SetFieldsVisible(newisvisible: Boolean)
