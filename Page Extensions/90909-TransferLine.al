@@ -21,6 +21,12 @@ pageextension 90909 translineext extends "Transfer Order Subform"
                 ApplicationArea = all;
                 Editable = false;
             }
+            field("disc. Unit Price"; Rec."disc. Unit Price")
+            {
+                Caption = 'Disc. Unit Price';
+                ApplicationArea = all;
+                Editable = false;
+            }
         }
         modify("Item No.")
         {

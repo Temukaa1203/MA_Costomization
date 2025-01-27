@@ -157,6 +157,7 @@ codeunit 90902 "TransferOrderCreator"
                 TransferOrderLine."Product Price" := SalesQuoteLine."Unit Price";
                 TransferOrderLine."line amount" := SalesQuoteLine."Line Amount";
                 TransferOrderLine."Standard KG" := SalesQuoteLine."Standard KG";
+                TransferOrderLine."disc. Unit Price" := SalesQuoteLine."disc. Unit Price";
                 // Validate and insert the new line into the Transfer Order
                 TransferOrderLine.Validate(Quantity, SalesQuoteLine.Quantity);
                 TransferOrderLine.Insert();

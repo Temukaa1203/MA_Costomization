@@ -12,6 +12,7 @@ codeunit 90903 PP_Utility
         salesheaderaddress: text[100];
         InStream: InStream;
         OutStream: OutStream;
+        ReleaseSalesDoc: Codeunit "Release Sales Document";
     begin
         SalesHeader.Reset();
         SalesHeader.SetFilter("Document Type", '=%1', SalesHeader."Document Type"::Quote);
@@ -30,13 +31,15 @@ codeunit 90903 PP_Utility
                             SalesHeader.Reset();
                             SalesHeader.SetRange("Quote No.", sqno);
                             if SalesHeader.FindSet() then begin
+                                ReleaseSalesDoc.Reopen(SalesHeader);
                                 // SalesHeader.Status := SalesHeader.Status::Released;
                                 SalesHeader."Work Description".CreateOutStream(OutStream, TEXTENCODING::UTF8);
                                 OutStream.WriteText(salesheaderaddress);
-                                SalesHeader.Status := SalesHeader.Status::Released;
                                 // InStream.ReadText(salesheaderaddress);
                                 SalesHeader.Modify();
                             end;
+                            Commit();
+                            ReleaseSalesDoc.PerformManualRelease(SalesHeader);
                         end;
                     end;
                 end;
@@ -97,9 +100,11 @@ codeunit 90903 PP_Utility
     [TryFunction]
     local procedure trycreateSO(var SalesHeader: Record "Sales Header")
     var
+        ReleaseSalesDoc: Codeunit "Release Sales Document";
         SalesQuoteToOrder: Codeunit "Sales-Quote to Order";
     begin
         SalesQuoteToOrder.Run(SalesHeader);
+        ReleaseSalesDoc.PerformManualRelease(SalesHeader);
     end;
     // [TryFunction]
     // local procedure TrymakeSO(var SalesHeader: Record "Sales Header")

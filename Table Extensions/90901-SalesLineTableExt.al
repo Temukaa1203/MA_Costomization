@@ -14,6 +14,11 @@ tableextension 90901 SalesLine_ReturnCode extends "Sales Line"
             Caption = 'Standard KG';
             DataClassification = ToBeClassified;
         }
+        field(90902; "Disc. Unit Price"; Decimal)
+        {
+            Caption = 'Disc. Unit Price';
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

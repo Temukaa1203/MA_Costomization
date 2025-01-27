@@ -16,6 +16,11 @@ pageextension 90903 SQ_Subform_ReturnCode extends "Sales Quote Subform"
                 ApplicationArea = all;
                 Editable = false;
             }
+            field("Disc. Unit Price"; Rec."Disc. Unit Price")
+            {
+                ApplicationArea = all;
+                Editable = false;
+            }
         }
         modify("No.")
         {
@@ -23,6 +28,7 @@ pageextension 90903 SQ_Subform_ReturnCode extends "Sales Quote Subform"
             var
             begin
                 GetStandKG();
+                getdiscunitprice();
             end;
         }
 
@@ -41,6 +47,16 @@ pageextension 90903 SQ_Subform_ReturnCode extends "Sales Quote Subform"
             Rec."Standard KG" := ItemR."Standard KG";
             Rec.Modify();
         end;
+    end;
+
+    local procedure getdiscunitprice(): Decimal
+    var
+        discprice: Decimal;
+    begin
+        discprice := Rec."Unit Price" * Rec."Line Discount %" / 100;
+        rec."Disc. Unit Price" := discprice;
+        rec.Modify();
+        Commit();
     end;
 
     var
