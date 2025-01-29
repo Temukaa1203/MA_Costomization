@@ -10,7 +10,6 @@ codeunit 90904 "SalesReturnOrderProcessor"
     begin
         if not ReturnCode.Get(SalesQuote."Return Code") then
             Error('Return reason not found');
-
         SalesReturnOrder.Init();
         SalesReturnOrder."Document Type" := SalesReturnOrder."Document Type"::"Return Order";
         SalesReturnOrder."Sell-to Customer no." := SalesQuote."Sell-to Customer no.";

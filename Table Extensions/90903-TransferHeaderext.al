@@ -13,6 +13,31 @@ tableextension 90903 transheadext extends "Transfer Header"
             Editable = false;
             DataClassification = ToBeClassified;
         }
+        field(90902; "Salesperson Code"; code[20])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Salesperson Code';
+            Editable = false;
+            TableRelation = "Salesperson/Purchaser";
+        }
+        field(90903; "Total Amount"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Total Amount';
+            Editable = false;
+        }
+        // field(90904; "Total VAT"; Decimal)
+        // {
+        //     DataClassification = ToBeClassified;
+        //     Caption = 'Total VAT';
+        //     Editable = false;
+        // }
+        // field(90905; "Total Incl. VAT"; Decimal)
+        // {
+        //     DataClassification = ToBeClassified;
+        //     Caption = 'Total Incl. VAT';
+        //     Editable = false;
+        // }
     }
 
     keys

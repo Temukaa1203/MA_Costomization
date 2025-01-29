@@ -53,9 +53,14 @@ pageextension 90903 SQ_Subform_ReturnCode extends "Sales Quote Subform"
     var
         discprice: Decimal;
     begin
-        discprice := Rec."Unit Price" * Rec."Line Discount %" / 100;
-        rec."Disc. Unit Price" := discprice;
-        rec.Modify();
+        if rec."Line Discount %" = 0 then begin
+            rec."Disc. Unit Price" := rec."Unit Price";
+            rec.Modify();
+        end else begin
+            discprice := Rec."Unit Price" * Rec."Line Discount %" / 100;
+            rec."Disc. Unit Price" := discprice;
+            rec.Modify();
+        end;
         Commit();
     end;
 
