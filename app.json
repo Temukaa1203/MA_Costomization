@@ -2,7 +2,7 @@
   "id": "40a11b44-ff9a-4c14-b64d-65adb2662dbb",
   "name": "MA_Costomization",
   "publisher": "EM Consulting LLC",
-  "version": "1.0.0.28",
+  "version": "1.0.0.29",
   "brief": "",
   "description": "",
   "privacyStatement": "",
@@ -15,7 +15,7 @@
       "id": "b3787c67-eac3-4b51-953c-16aa393c6851",
   "name": "PickPack",
   "publisher": "EM Consulting",
-  "version": "1.0.0.90"
+  "version": "1.0.0.91"
     },
     {
       "id": "e5818c64-4c3c-45f3-b761-9ad64c55e980",
@@ -29,7 +29,7 @@
   "application": "23.0.0.0",
   "idRanges": [
     {
-      "from": 90900,
+      "from": 50100,
       "to": 90950
     }
   ],

@@ -12,17 +12,12 @@ codeunit 90902 "TransferOrderCreator"
         ReleaseTransferDoc: Codeunit "Release Transfer Document";
         total: Decimal;
     begin
-        // Get the location based on the "Transfer-from Code"
-        // if not Location.Get(SalesQuoteHeader."Transfer-from Code") then
-        //     Error('Location not found for Transfer-from Code %1', SalesQuoteHeader."Transfer-from Code");
-
-        // Initialize the Transfer Order header
         TransferOrder.Init();
         TransferOrder.Validate("Transfer-to Code", SalesQuoteHeader."Transfer-to Code");
         TransferOrder.Validate("Transfer-from Code", SalesQuoteHeader."Transfer-from Code");
         TransferOrder.Validate("Return Code", SalesQuoteHeader."Return Code");
         TransferOrder.Validate("SQ no", SalesQuoteHeader."No.");
-        TransferOrder.Validate("Salesperson Code", SalesQuoteHeader."Salesperson Code");
+        TransferOrder.Validate("MA Salesperson Code", SalesQuoteHeader."Salesperson Code");
         TransferOrder.Validate("In-Transit Code", 'IN-TRANSIT');
         TransferOrder.Validate("PickPack State Code", SalesQuoteHeader."PickPack State Code");
         TransferOrder.Validate("PickPack District Code", SalesQuoteHeader."PickPack District Code");

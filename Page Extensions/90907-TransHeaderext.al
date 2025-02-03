@@ -13,6 +13,7 @@ pageextension 90907 transheadext extends "Transfer Order"
             {
                 ApplicationArea = All;
                 Editable = false;
+                Visible = false;
             }
             field("Return Code"; Rec."Return Code")
             {

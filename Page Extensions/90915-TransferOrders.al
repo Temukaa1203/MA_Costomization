@@ -11,6 +11,7 @@ pageextension 90915 transferorders_ext extends "Transfer Orders"
             field("Salesperson Code"; Rec."Salesperson Code")
             {
                 ApplicationArea = All;
+                Visible = false;
             }
             field("Total Amount"; Rec."Total Amount")
             {
