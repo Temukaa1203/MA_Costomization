@@ -26,6 +26,12 @@ tableextension 90903 transheadext extends "Transfer Header"
             Caption = 'Total Amount';
             Editable = false;
         }
+        field(90910; "Release Error"; Text[2048])
+        {
+            Caption = 'Release';
+            NotBlank = true;
+            DataClassification = ToBeClassified;
+        }
         // field(90904; "Total VAT"; Decimal)
         // {
         //     DataClassification = ToBeClassified;

@@ -6,5 +6,7 @@ permissionset 90900 MAgro_Permission
         codeunit PP_Utility = X,
         codeunit SalesReturnOrderProcessor = X,
         codeunit TransferOrderCreator = X,
-        codeunit TransferOrderHelper = X;
+        codeunit TransferOrderHelper = X,
+        tabledata MyTable = RIMD,
+        table MyTable = X;
 }

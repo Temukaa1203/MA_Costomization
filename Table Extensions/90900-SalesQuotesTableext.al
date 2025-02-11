@@ -29,6 +29,12 @@ tableextension 90900 SalesQuoteHeaderExt extends "Sales Header"
             NotBlank = true;
             DataClassification = ToBeClassified;
         }
+        field(90910; "SQ2TO Error"; Text[2048])
+        {
+            Caption = 'SQ2TO Error';
+            NotBlank = true;
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

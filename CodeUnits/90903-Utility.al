@@ -39,7 +39,7 @@ codeunit 90903 PP_Utility
                                 SalesHeader.Modify();
                             end;
                             Commit();
-                            ReleaseSalesDoc.PerformManualRelease(SalesHeader);
+                            //ReleaseSalesDoc.PerformManualRelease(SalesHeader);
                         end;
                     end;
                 end;
@@ -82,8 +82,9 @@ codeunit 90903 PP_Utility
         transferorder: Record "Transfer Header";
     begin
         if maketransferorder.CreateTransferOrder(SalesHeader) then begin
+
+            SalesHeader.Delete();
             Commit();
-            SalesHeader.Delete()
         end
         else begin
             transferorder.Reset();
