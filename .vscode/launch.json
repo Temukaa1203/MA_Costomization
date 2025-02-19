@@ -6,7 +6,7 @@
             "request": "launch",
             "type": "al",
             "environmentType": "Sandbox",
-            "environmentName": "PPEE",
+            "environmentName": "PPSOTO",
             "startupObjectId": 9300,
             "startupObjectType": "Page",
             "breakOnError": "All",

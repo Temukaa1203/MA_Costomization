@@ -170,7 +170,7 @@ codeunit 90902 "TransferOrderCreator"
         //or
         // No. gaptai bolchhin bol zuw uu asuuh. 
         //ene function false return bol headeree ustga
-        //CODEUNIT.Run(CODEUNIT::"Release Transfer Document", TransferOrder);
+        CODEUNIT.Run(CODEUNIT::"Release Transfer Document", TransferOrder);
         // Commit();
         // TransferOrder.Status := TransferOrder.Status::Released;
         // TransferOrder.Modify();

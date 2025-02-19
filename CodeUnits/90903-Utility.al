@@ -6,7 +6,7 @@ codeunit 90903 PP_Utility
         SalesHeader: Record "Sales Header";
         Customer: Record Customer;
         maketransferorder: Codeunit TransferOrderCreator;
-        makeSalesReturnOrder: codeunit SalesReturnOrderProcessor;
+        // makeSalesReturnOrder: codeunit SalesReturnOrderProcessor;
         SalesPerson: Record "Salesperson/Purchaser";
         sqno: code[20];
         salesheaderaddress: text[100];
@@ -59,11 +59,11 @@ codeunit 90903 PP_Utility
                     trycreateTO(SalesHeader)
                     // trycreateTO(SalesHeader);
                 end;
-                if Customer.Get(SalesHeader."Sell-to Customer No.") and (Customer.Blocked = Customer.Blocked::" ") and (SalesHeader."Order Type" = SalesHeader."Order Type"::"SALES RETURN") then begin
-                    // if SalesPerson.Get(SalesHeader."Salesperson Code") and SalesPerson."Sales-Quote to Order" then begin
-                    makeSalesReturnOrder.CreateSalesReturnOrder(SalesHeader);
-                    Commit();
-                end;
+                // if Customer.Get(SalesHeader."Sell-to Customer No.") and (Customer.Blocked = Customer.Blocked::" ") and (SalesHeader."Order Type" = SalesHeader."Order Type"::"SALES RETURN") then begin
+                //     // if SalesPerson.Get(SalesHeader."Salesperson Code") and SalesPerson."Sales-Quote to Order" then begin
+                //     makeSalesReturnOrder.CreateSalesReturnOrder(SalesHeader);
+                //     Commit();
+                // end;
                 if Customer.Get(SalesHeader."Sell-to Customer No.") and (Customer.Blocked = Customer.Blocked::" ") and (SalesHeader."Order Type" = SalesHeader."Order Type"::"TRANSFER RETURN") then begin
                     // if SalesPerson.Get(SalesHeader."Salesperson Code") and SalesPerson."Sales-Quote to Order" then begin
                     trycreateTO(SalesHeader)

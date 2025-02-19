@@ -12,8 +12,13 @@ codeunit 90905 EECreateTO
         SalesHeader: Record "Sales Header";
         Customer: Record Customer;
         maketransferorder: Codeunit TransferOrderCreator;
+        mydatetime: DateTime;
+        mydate: date;
     begin
+        mydate := CalcDate('<-3D>', Today);
+        mydatetime := CreateDateTime(mydate, 0T);
         SalesHeader.Reset();
+        SalesHeader.SetRange(SystemCreatedAt, mydatetime, CurrentDateTime);
         SalesHeader.SetFilter("Document Type", '=%1', SalesHeader."Document Type"::Quote);
         SalesHeader.SetFilter(Status, '=%1', SalesHeader.Status::Released);
         if SalesHeader.Find('-') then begin

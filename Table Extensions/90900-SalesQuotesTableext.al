@@ -35,6 +35,17 @@ tableextension 90900 SalesQuoteHeaderExt extends "Sales Header"
             NotBlank = true;
             DataClassification = ToBeClassified;
         }
+        modify("Sell-to Customer No.")
+        {
+            trigger OnAfterValidate()
+            begin
+                if rec."Document Type" = Rec."Document Type"::"Return Order"
+                                then begin
+                    rec.validate("Gen. Bus. Posting Group", 'SRO');
+                    rec.Validate("VAT Bus. Posting Group", 'VAT10');
+                end;
+            end;
+        }
     }
 
     keys
