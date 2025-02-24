@@ -17,6 +17,10 @@ pageextension 90915 transferorders_ext extends "Transfer Orders"
             {
                 ApplicationArea = All;
             }
+            field("Transfer-to Name"; Rec."Transfer-to Name")
+            {
+                ApplicationArea = All;
+            }
         }
     }
 

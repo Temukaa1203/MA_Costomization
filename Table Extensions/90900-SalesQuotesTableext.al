@@ -40,7 +40,7 @@ tableextension 90900 SalesQuoteHeaderExt extends "Sales Header"
             trigger OnAfterValidate()
             begin
                 if rec."Document Type" = Rec."Document Type"::"Return Order"
-                                then begin
+                    then begin
                     rec.validate("Gen. Bus. Posting Group", 'SRO');
                     rec.Validate("VAT Bus. Posting Group", 'VAT10');
                 end;

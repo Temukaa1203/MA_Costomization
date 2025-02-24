@@ -62,7 +62,11 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
                     ApplicationArea = All;
                 }
             }
-
+            field("PickPack Delivery Type Code"; Rec."PickPack Delivery Type Code")
+            {
+                Editable = true;
+                ApplicationArea = All;
+            }
         }
 
     }
