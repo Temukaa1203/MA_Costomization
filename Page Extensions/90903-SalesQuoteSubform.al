@@ -22,15 +22,15 @@ pageextension 90903 SQ_Subform_ReturnCode extends "Sales Quote Subform"
                 Editable = false;
             }
         }
-        modify("No.")
-        {
-            trigger OnAfterValidate()
-            var
-            begin
-                GetStandKG();
-                getdiscunitprice();
-            end;
-        }
+        // modify("No.")
+        // {
+        //     trigger OnAfterValidate()
+        //     var
+        //     begin
+        //         GetStandKG();
+        //         getdiscunitprice();
+        //     end;
+        // }
 
 
     }
@@ -39,30 +39,30 @@ pageextension 90903 SQ_Subform_ReturnCode extends "Sales Quote Subform"
     {
         // Add changes to page actions here
     }
-    local procedure GetStandKG(): Decimal
-    var
-        ItemR: Record Item;
-    begin
-        if ItemR.Get(Rec."No.") then begin
-            Rec."Standard KG" := ItemR."Standard KG";
-            Rec.Modify();
-        end;
-    end;
+    // local procedure GetStandKG(): Decimal
+    // var
+    //     ItemR: Record Item;
+    // begin
+    //     if ItemR.Get(Rec."No.") then begin
+    //         Rec."Standard KG" := ItemR."Standard KG";
+    //         Rec.Modify();
+    //     end;
+    // end;
 
-    local procedure getdiscunitprice(): Decimal
-    var
-        discprice: Decimal;
-    begin
-        if rec."Line Discount %" = 0 then begin
-            rec."Disc. Unit Price" := rec."Unit Price";
-            rec.Modify();
-        end else begin
-            discprice := Rec."Unit Price" * Rec."Line Discount %" / 100;
-            rec."Disc. Unit Price" := discprice;
-            rec.Modify();
-        end;
-        Commit();
-    end;
+    // local procedure getdiscunitprice(): Decimal
+    // var
+    //     discprice: Decimal;
+    // begin
+    //     if rec."Line Discount %" = 0 then begin
+    //         rec."Disc. Unit Price" := rec."Unit Price";
+    //         rec.Modify();
+    //     end else begin
+    //         discprice := Rec."Unit Price" * Rec."Line Discount %" / 100;
+    //         rec."Disc. Unit Price" := discprice;
+    //         rec.Modify();
+    //     end;
+    //     Commit();
+    // end;
 
     var
         myInt: Integer;

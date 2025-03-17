@@ -13,6 +13,8 @@ codeunit 90909 "SalesReturnOrderProcessor"
         SalesReturnOrder.Init();
         SalesReturnOrder."Document Type" := SalesReturnOrder."Document Type"::"Return Order";
         SalesReturnOrder.Validate("Sell-to Customer No.", PSI."Sell-to Customer No.");
+        SalesReturnOrder.validate("PickPack Ret. Del. Type Code", 'DELIVERY-ITEM');
+        SalesReturnOrder.Validate("PickPack Return Reason Code", 'CUSTOMERWISH');
         // SalesReturnOrder.Validate("Sell-to Customer Name", PSI."Sell-to Customer Name");
         // SalesReturnOrder.Validate("Sell-to Customer Name 2", PSI."Sell-to Customer Name 2");
         // SalesReturnOrder.Validate("Sell-to Address", PSI."Sell-to Address");
@@ -29,36 +31,15 @@ codeunit 90909 "SalesReturnOrderProcessor"
         SalesReturnOrder.Validate("Customer Posting Group", PSI."Customer Posting Group");
         SalesReturnOrder.Validate("Customer Disc. Group", PSI."Customer Disc. Group");
         SalesReturnOrder.Validate("Customer Price Group", PSI."Customer Price Group");
-
+        SalesReturnOrder.Validate("PickPack Return Code", PSI."PickPack order Code");
         SalesReturnOrder.Validate("External Document No.", PSI."External Document No.");
         SalesReturnOrder.Validate("PickPack Delivery Email", PSI."PickPack Delivery Email");
-        SalesReturnOrder.Validate("PickPack Delivery Name", PSI."PickPack Delivery Name");
-        SalesReturnOrder.Validate("PickPack Delivery Phone No.", PSI."PickPack Delivery Phone No.");
+        SalesReturnOrder.Validate("PickPack Return Name", PSI."PickPack Delivery Name");
+        SalesReturnOrder.Validate("PickPack Return Phone No.", PSI."PickPack Delivery Phone No.");
         SalesReturnOrder.Validate("PickPack Delivery Type Code", PSI."PickPack Delivery Type Code");
-        SalesReturnOrder.Validate("PickPack District Code", PSI."PickPack District Code");
-        //SalesReturnOrder.Validate("PickPack Item Prepared Date", PSI."PickPack Item Prepared Date");
-        //SalesReturnOrder.Validate("PickPack Last Status", PSI."PickPack Last Status");
-        //SalesReturnOrder.Validate("PickPack Last Status Date", PSI."PickPack Last Status Date");
-        //SalesReturnOrder.Validate("PickPack Message", PSI."PickPack Message");
-        // SalesReturnOrder.Validate("PickPack Return Code", PSI."PickPack Order Code");
-        //pickpack return code oruulah
-        SalesReturnOrder.Validate("PickPack Quarter Code", PSI."PickPack Quarter Code");
-        //SalesReturnOrder.Validate("PickPack Received Date", PSI."PickPack Received Date");
-        // SalesReturnOrder.Validate("PickPack Send Error", PSI."PickPack Send Error");
-        // SalesReturnOrder.Validate("PickPack Sent", PSI."PickPack Sent");
-        //SalesReturnOrder.Validate("PickPack Sent Date", PSI."PickPack Sent Date");
-        //SalesReturnOrder.Validate("PickPack Shipped Date", PSI."PickPack Shipped Date");
         SalesReturnOrder.Validate("PickPack State Code", PSI."PickPack State Code");
-        // SalesReturnOrder.Validate("PP Json Data", PSI."PP Json Data");
-        // SalesReturnOrder.Validate("Bill-to Name", PSI."Bill-to Name");
-        // SalesReturnOrder.Validate("Bill-to Name 2", PSI."Bill-to Name 2");
-        // SalesReturnOrder.Validate("Bill-to City", PSI."Bill-to City");
-        // SalesReturnOrder.Validate("Bill-to Address 2", PSI."Bill-to Address 2");
-        // SalesReturnOrder.Validate("Bill-to Contact", PSI."Bill-to Contact");
-        // SalesReturnOrder.Validate("Bill-to Country/Region Code", PSI."Bill-to Country/Region Code");
-        // SalesReturnOrder.Validate("Bill-to Contact No.", PSI."Bill-to Contact No.");
-        // SalesReturnOrder.Validate("Bill-to Post Code", PSI."Bill-to Post Code");
-        // SalesReturnOrder.Validate("Bill-to Address", PSI."Bill-to Address");
+        SalesReturnOrder.Validate("PickPack District Code", PSI."PickPack District Code");
+        SalesReturnOrder.Validate("PickPack Quarter Code", PSI."PickPack Quarter Code");
         SalesReturnOrder.Validate("Bill-to Customer No.", PSI."Bill-to Customer No.");
         SalesReturnOrder.Validate("Gen. Bus. Posting Group", 'SRO');
         SalesReturnOrder.Validate("VAT Bus. Posting Group", 'VAT10');
@@ -72,6 +53,7 @@ codeunit 90909 "SalesReturnOrderProcessor"
                 SalesOrderLine.Init();
                 SalesOrderLine."Document Type" := SalesReturnOrder."Document Type";
                 SalesOrderLine."Document No." := SalesReturnOrder."No."; // Set the document number
+                // SalesOrderLine.validate("No.", SalesQuoteLine."No."); // Reference the Item No.
                 SalesOrderLine."No." := SalesQuoteLine."No."; // Reference the Item No.
                 SalesOrderLine."Type" := SalesQuoteLine."Type";
                 SalesOrderLine."Posting Group" := SalesQuoteLine."Posting Group";

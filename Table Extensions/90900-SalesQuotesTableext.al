@@ -28,6 +28,26 @@ tableextension 90900 SalesQuoteHeaderExt extends "Sales Header"
             TableRelation = "Return Reason";
             NotBlank = true;
             DataClassification = ToBeClassified;
+            // trigger OnValidate()
+            // var
+            //     salesline: Record "Sales Line";
+            //     salesheader: Record "Sales Header";
+            // begin
+            //     salesline.Reset();
+            //     salesline.SetRange("Document Type", salesline."Document Type"::"Return Order");
+            //     salesline.SetRange("Document No.", Rec."No.");
+            //     if salesline.find('-') then begin
+            //         repeat
+            //             Message('return reason code set to %1', format(rec."Return Code"));
+            //             // salesline.validate("Return Reason Code", rec."Return Code");
+            //             salesline."Return Reason Code" := rec."Return Code";
+            //             salesline.Modify(true);
+            //             Commit();
+            //         // Message(Format(salesline."Return Reason Code"));
+            //         // Message(Format(salesline."No."));
+            //         until salesline.Next() = 0;
+            //     end;
+            // end;
         }
         field(90910; "SQ2TO Error"; Text[2048])
         {
