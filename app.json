@@ -2,7 +2,7 @@
   "id": "40a11b44-ff9a-4c14-b64d-65adb2662dbb",
   "name": "MA_Costomization",
   "publisher": "EM Consulting LLC",
-  "version": "1.0.0.38",
+  "version": "1.0.0.39",
   "brief": "",
   "description": "",
   "privacyStatement": "",
@@ -35,7 +35,7 @@
   ],
   "resourceExposurePolicy": {
     "allowDebugging": true,
-    "allowDownloadingSource": true,
+    "allowDownloadingSource": false,
     "includeSourceInSymbolFile": true
   },
   "runtime": "13.0",

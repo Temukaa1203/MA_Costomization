@@ -15,19 +15,7 @@ codeunit 90909 "SalesReturnOrderProcessor"
         SalesReturnOrder.Validate("Sell-to Customer No.", PSI."Sell-to Customer No.");
         SalesReturnOrder.validate("PickPack Ret. Del. Type Code", 'DELIVERY-ITEM');
         SalesReturnOrder.Validate("PickPack Return Reason Code", 'CUSTOMERWISH');
-        // SalesReturnOrder.Validate("Sell-to Customer Name", PSI."Sell-to Customer Name");
-        // SalesReturnOrder.Validate("Sell-to Customer Name 2", PSI."Sell-to Customer Name 2");
-        // SalesReturnOrder.Validate("Sell-to Address", PSI."Sell-to Address");
-        // SalesReturnOrder.Validate("Sell-to Address 2", PSI."Sell-to Address 2");
         SalesReturnOrder.Validate("Your Reference", PSI."Your Reference");
-        // SalesReturnOrder.Validate("Sell-to City", PSI."Sell-to City");
-        // SalesReturnOrder.Validate("Sell-to Contact", PSI."Sell-to Contact");
-        // SalesReturnOrder.Validate("Sell-to Post Code", PSI."Sell-to Post Code");
-        // SalesReturnOrder.Validate("Sell-to County", PSI."Sell-to County");
-        // SalesReturnOrder.Validate("Sell-to Phone No.", PSI."Sell-to Phone No.");
-        // SalesReturnOrder.Validate("Sell-to E-Mail", PSI."Sell-to E-Mail");
-        // SalesReturnOrder.Validate("Sell-to Contact No.", PSI."Sell-to Contact No.");
-        // SalesReturnOrder.Validate("Sell-to Country/Region Code", PSI."Sell-to Country/Region Code");
         SalesReturnOrder.Validate("Customer Posting Group", PSI."Customer Posting Group");
         SalesReturnOrder.Validate("Customer Disc. Group", PSI."Customer Disc. Group");
         SalesReturnOrder.Validate("Customer Price Group", PSI."Customer Price Group");
@@ -44,17 +32,21 @@ codeunit 90909 "SalesReturnOrderProcessor"
         SalesReturnOrder.Validate("Gen. Bus. Posting Group", 'SRO');
         SalesReturnOrder.Validate("VAT Bus. Posting Group", 'VAT10');
         SalesReturnOrder.Insert(true);
-        // SalesReturnOrder.validate("Applies-to ID", PSI."No.");
-        // CODEUNIT.Run(CODEUNIT::"Sales Header Apply", SalesReturnOrder);
         SalesQuoteLine.SetRange("Document No.", PSI."No.");
 
         if SalesQuoteLine.FindSet() then begin
             repeat
                 SalesOrderLine.Init();
                 SalesOrderLine."Document Type" := SalesReturnOrder."Document Type";
-                SalesOrderLine."Document No." := SalesReturnOrder."No."; // Set the document number
-                // SalesOrderLine.validate("No.", SalesQuoteLine."No."); // Reference the Item No.
-                SalesOrderLine."No." := SalesQuoteLine."No."; // Reference the Item No.
+                SalesOrderLine.Validate("Document No.", SalesReturnOrder."No.");
+                SalesOrderLine.validate("Sell-to Customer No.", SalesReturnOrder."Sell-to Customer No.");
+                SalesOrderLine.Validate("Bill-to Customer No.", SalesReturnOrder."Bill-to Customer No.");
+                SalesOrderLine.validate("Shortcut Dimension 1 Code", SalesQuoteLine."Shortcut Dimension 1 Code");
+                SalesOrderLine.validate("Shortcut Dimension 2 Code", SalesQuoteLine."Shortcut Dimension 2 Code");
+                SalesOrderLine.validate("Work Type Code", SalesQuoteLine."Work Type Code");
+                SalesOrderLine.Validate("Transaction Type", SalesQuoteLine."Transaction Type");
+                SalesOrderLine.validate("Transport Method", SalesQuoteLine."Transport Method");
+                SalesOrderLine."No." := SalesQuoteLine."No.";
                 SalesOrderLine."Type" := SalesQuoteLine."Type";
                 SalesOrderLine."Posting Group" := SalesQuoteLine."Posting Group";
                 SalesOrderLine."Customer Price Group" := SalesQuoteLine."Customer Price Group";
@@ -75,13 +67,8 @@ codeunit 90909 "SalesReturnOrderProcessor"
                 SalesOrderLine."Location Code" := SalesQuoteLine."Location Code";
                 SalesOrderLine.Insert();
             until SalesQuoteLine.Next() = 0;
-
-            // SalesReturnOrder.Status := SalesReturnOrder.Status::Released;
             SalesReturnOrder.Modify();
             Commit();
-            // NewReturnOrderNo := SalesReturnOrder."No.";
-            // // Return the created SalesReturnOrder document for further processing if needed
-            // MESSAGE('Sales Return Order created with No: %1', NewReturnOrderNo);
             page.Run(page::"Sales Return Order", SalesReturnOrder);
         end;
 
