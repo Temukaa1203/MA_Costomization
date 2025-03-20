@@ -57,63 +57,7 @@ codeunit 90902 "TransferOrderCreator"
             TransferOrder.Validate("Transfer-to County", cust.County);
             TransferOrder.Validate("Trsf.-to Country/Region Code", cust."Country/Region Code");
         end;
-        // end
-        // else begin
-        //     Message('2', Format(SalesQuoteHeader."Sell-to Customer No."));
-        //     Location.Reset();
-        //     if SalesQuoteHeader."Transfer-to Code" = 'PP200' then begin
-        //         Location.SetRange(Code, SalesQuoteHeader."Transfer-from Code");
-        //         if Location.FindSet() then begin
-        //             TransferOrder."Transfer-to Name" := Location.Name;
-        //             TransferOrder."Transfer-to Name 2" := Location."Name 2";
-        //             TransferOrder."Transfer-to Address" := Location.Address;
-        //             TransferOrder."Transfer-to Address 2" := Location."Address 2";
-        //             TransferOrder."Transfer-to Post Code" := Location."Post Code";
-        //             TransferOrder."Transfer-to City" := Location.City;
-        //             TransferOrder."Transfer-to County" := Location.County;
-        //             TransferOrder."Trsf.-to Country/Region Code" := Location."Country/Region Code";
-        //             TransferOrder."Transfer-to Contact" := Location.Contact;
-        //         end;
-        //         cust.Reset();
-        //         cust.SetRange("No.", SalesQuoteHeader."Sell-to Customer No.");
-        //         if cust.FindSet() then begin
-        //             TransferOrder."Transfer-From Name" := cust.Name;
-        //             TransferOrder."Transfer-From Contact" := cust.Contact;
-        //             TransferOrder."Transfer-From Name 2" := cust."Name 2";
-        //             TransferOrder."Transfer-From Address" := cust.Address;
-        //             TransferOrder."Transfer-From Address 2" := cust."Address 2";
-        //             TransferOrder."Transfer-From Post Code" := cust."Post Code";
-        //             TransferOrder."Transfer-From City" := cust.City;
-        //             TransferOrder."Trfdfansfer-From County" := cust.County;
-        //             TransferOrder."Trsf.-From Country/Region Code" := cust."Country/Region Code";
-        //         end;
-        //     end;
-        // Location.SetRange(Code, SalesQuoteHeader."Transfer-from Code");
-        // if Location.FindSet() then begin
-        //     TransferOrder."Transfer-from Name" := Location.Name;
-        //     TransferOrder."Transfer-from Name 2" := Location."Name 2";
-        //     TransferOrder."Transfer-from Address" := Location.Address;
-        //     TransferOrder."Transfer-from Address 2" := Location."Address 2";
-        //     TransferOrder."Transfer-from Post Code" := Location."Post Code";
-        //     TransferOrder."Transfer-from City" := Location.City;
-        //     TransferOrder."Transfer-from County" := Location.County;
-        //     TransferOrder."Trsf.-from Country/Region Code" := Location."Country/Region Code";
-        //     TransferOrder."Transfer-from Contact" := Location.Contact;
-        // end;
-        // Location.Reset();
-        // Location.SetRange(Code, SalesQuoteHeader."Transfer-to Code");
-        // if Location.FindSet() then begin
-        //     TransferOrder."Transfer-to Name" := Location.Name;
-        //     TransferOrder."Transfer-to Contact" := Location.Contact;
-        //     TransferOrder."Transfer-to Name 2" := Location."Name 2";
-        //     TransferOrder."Transfer-to Address" := Location.Address;
-        //     TransferOrder."Transfer-to Address 2" := Location."Address 2";
-        //     TransferOrder."Transfer-to Post Code" := Location."Post Code";
-        //     TransferOrder."Transfer-to City" := Location.City;
-        //     TransferOrder."Transfer-to County" := Location.County;
-        //     TransferOrder."Trsf.-to Country/Region Code" := Location."Country/Region Code";
-        // end;
-        // Insert the Transfer Order header
+
         TransferOrder.Insert(true);
         // Loop through the Sales Quote lines and add them to the Transfer Order
         SalesQuoteLine.SetRange("Document No.", SalesQuoteHeader."No.");
@@ -162,24 +106,8 @@ codeunit 90902 "TransferOrderCreator"
             until SalesQuoteLine.Next() = 0;
             TransferOrder.validate("Total Amount", total);
         end;
-        //order insert
-        //lineuudara guiged, document no  = insert.no
-        //functseeg garchuul:
-        //false bolchhin bol delete sayni line on parten fnction
 
-        //or
-        // No. gaptai bolchhin bol zuw uu asuuh. 
-        //ene function false return bol headeree ustga
         CODEUNIT.Run(CODEUNIT::"Release Transfer Document", TransferOrder);
-        // Commit();
-        // TransferOrder.Status := TransferOrder.Status::Released;
-        // TransferOrder.Modify();
-        // Return the Transfer Order number
-        // NewTransferOrderNo := TransferOrder."No."; // Capture the new order number
-        // // Optionally, you could return the Transfer Order record, or implement additional logic here
-        // Message('Transfer Order %1 has been created.', NewTransferOrderNo);
-
-        // PAGE.RUN(PAGE::"Transfer Order", TransferOrder);
     end;
 
 }

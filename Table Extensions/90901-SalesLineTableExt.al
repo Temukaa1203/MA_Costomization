@@ -39,20 +39,7 @@ tableextension 90901 SalesLine_ReturnCode extends "Sales Line"
                 end;
                 Commit();
             end;
-            // local procedure getdiscunitprice(): Decimal
-            // var
-            //     discprice: Decimal;
-            // begin
-            //     if rec."Line Discount %" = 0 then begin
-            //         rec."Disc. Unit Price" := rec."Unit Price";
-            //         rec.Modify();
-            //     end else begin
-            //         discprice := Rec."Unit Price" * Rec."Line Discount %" / 100;
-            //         rec."Disc. Unit Price" := discprice;
-            //         rec.Modify();
-            //     end;
-            //     Commit();
-            // end;
+
         }
     }
 

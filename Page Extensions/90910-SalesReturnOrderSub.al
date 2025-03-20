@@ -9,6 +9,11 @@ pageextension 90910 SRO_Ext extends "Sales Return Order Subform"
                 ApplicationArea = all;
                 Editable = false;
             }
+            field("Disc. Unit Price"; Rec."Disc. Unit Price")
+            {
+                ApplicationArea = All;
+                Editable = false;
+            }
         }
     }
 

@@ -37,34 +37,36 @@ codeunit 90909 "SalesReturnOrderProcessor"
         if SalesQuoteLine.FindSet() then begin
             repeat
                 SalesOrderLine.Init();
-                SalesOrderLine."Document Type" := SalesReturnOrder."Document Type";
-                SalesOrderLine.Validate("Document No.", SalesReturnOrder."No.");
+                SalesOrderLine."Document No." := SalesReturnOrder."No.";
+                SalesOrderLine.validate(Type, SalesQuoteLine.Type);
+                SalesOrderLine.Validate("Document Type", SalesReturnOrder."Document Type"::"Return Order");
                 SalesOrderLine.validate("Sell-to Customer No.", SalesReturnOrder."Sell-to Customer No.");
+
+                SalesOrderLine.validate("No.", SalesQuoteLine."No.");
+                SalesOrderLine.validate("Line No.", SalesQuoteLine."Line No.");
+                SalesOrderLine.Validate("Item Reference No.", SalesQuoteLine."Item Reference No.");
+
                 SalesOrderLine.Validate("Bill-to Customer No.", SalesReturnOrder."Bill-to Customer No.");
                 SalesOrderLine.validate("Shortcut Dimension 1 Code", SalesQuoteLine."Shortcut Dimension 1 Code");
                 SalesOrderLine.validate("Shortcut Dimension 2 Code", SalesQuoteLine."Shortcut Dimension 2 Code");
                 SalesOrderLine.validate("Work Type Code", SalesQuoteLine."Work Type Code");
                 SalesOrderLine.Validate("Transaction Type", SalesQuoteLine."Transaction Type");
                 SalesOrderLine.validate("Transport Method", SalesQuoteLine."Transport Method");
-                SalesOrderLine."No." := SalesQuoteLine."No.";
-                SalesOrderLine."Type" := SalesQuoteLine."Type";
-                SalesOrderLine."Posting Group" := SalesQuoteLine."Posting Group";
-                SalesOrderLine."Customer Price Group" := SalesQuoteLine."Customer Price Group";
-                SalesOrderLine."Gen. Bus. Posting Group" := SalesReturnOrder."Gen. Bus. Posting Group";
-                SalesOrderLine."Gen. Prod. Posting Group" := SalesQuoteLine."Gen. Prod. Posting Group";
-                SalesOrderLine."Tax Group Code" := SalesQuoteLine."Tax Group Code";
-                SalesOrderLine."Description" := SalesQuoteLine."Description";
-                // SalesOrderLine."VAT Prod. Posting Group" := SalesQuoteLine."VAT Prod. Posting Group";
-                SalesOrderLine."Quantity" := SalesQuoteLine.Quantity;
-                SalesOrderLine."Unit Price" := SalesQuoteLine."Unit Price";
-                SalesOrderLine."Amount" := SalesQuoteLine.Amount;
-                SalesOrderLine."Unit of Measure" := SalesQuoteLine."Unit of Measure";
-                SalesOrderLine."Unit of Measure code" := SalesQuoteLine."Unit of Measure code";
-                SalesOrderLine."Line no." := SalesQuoteLine."Line No.";
-                SalesOrderLine."Line Amount" := SalesQuoteLine."Line Amount";
-                SalesOrderLine."Line Discount %" := SalesQuoteLine."Line Discount %";
-                SalesOrderLine.Validate(Quantity, SalesQuoteLine.Quantity); // 
-                SalesOrderLine."Location Code" := SalesQuoteLine."Location Code";
+                SalesOrderLine.Validate("Posting Group", SalesQuoteLine."Posting Group");
+                SalesOrderLine.Validate("Customer Price Group", SalesQuoteLine."Customer Price Group");
+                SalesOrderLine.Validate("Gen. Bus. Posting Group", SalesReturnOrder."Gen. Bus. Posting Group");
+                SalesOrderLine.Validate("Gen. Prod. Posting Group", SalesQuoteLine."Gen. Prod. Posting Group");
+                SalesOrderLine.Validate("Tax Group Code", SalesQuoteLine."Tax Group Code");
+                SalesOrderLine.Validate("Description", SalesQuoteLine."Description");
+                SalesOrderLine.Validate("VAT Prod. Posting Group", SalesQuoteLine."VAT Prod. Posting Group");
+                SalesOrderLine.Validate("Quantity", SalesQuoteLine.Quantity);
+                SalesOrderLine.Validate("Unit Price", SalesQuoteLine."Unit Price");
+                SalesOrderLine.Validate("Amount", SalesQuoteLine.Amount);
+                SalesOrderLine.Validate("Unit of Measure", SalesQuoteLine."Unit of Measure");
+                SalesOrderLine.Validate("Unit of Measure code", SalesQuoteLine."Unit of Measure code");
+                SalesOrderLine.Validate("Line Amount", SalesQuoteLine."Line Amount");
+                SalesOrderLine.Validate("Line Discount %", SalesQuoteLine."Line Discount %");
+                SalesOrderLine.Validate("Location Code", SalesQuoteLine."Location Code");
                 SalesOrderLine.Insert();
             until SalesQuoteLine.Next() = 0;
             SalesReturnOrder.Modify();

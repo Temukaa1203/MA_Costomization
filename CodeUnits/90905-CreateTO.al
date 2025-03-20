@@ -15,7 +15,7 @@ codeunit 90905 EECreateTO
         mydatetime: DateTime;
         mydate: date;
     begin
-        mydate := CalcDate('<-3D>', Today);
+        mydate := CalcDate('<-1D>', Today);
         mydatetime := CreateDateTime(mydate, 0T);
         SalesHeader.Reset();
         SalesHeader.SetRange(SystemCreatedAt, mydatetime, CurrentDateTime);
@@ -28,7 +28,12 @@ codeunit 90905 EECreateTO
                         SalesHeader."SQ2TO Error" := GetLastErrorText();
                         SalesHeader.Modify();
                     end;
-
+                end;
+                if Customer.Get(SalesHeader."Sell-to Customer No.") and (Customer.Blocked = Customer.Blocked::" ") and (SalesHeader."Order Type" = SalesHeader."Order Type"::"TRANSFER RETURN") then begin
+                    if not CreateTransferOrder(SalesHeader) then begin
+                        SalesHeader."SQ2TO Error" := GetLastErrorText();
+                        SalesHeader.Modify();
+                    end;
                 end;
             until SalesHeader.Next() = 0;
         end;

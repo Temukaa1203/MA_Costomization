@@ -16,7 +16,7 @@ codeunit 90906 ReleaseTO
         releasetodoc: Codeunit "Release Transfer Document";
         salesheader: Record "Sales Header";
     begin
-        mydate := CalcDate('<-3D>', Today);
+        mydate := CalcDate('<-1D>', Today);
         TranHeader.Reset();
         //Filter
         mydatetime := CreateDateTime(mydate, 0T);
@@ -29,20 +29,19 @@ codeunit 90906 ReleaseTO
                 if not ReleaseTO(TranHeader) then begin
                     if TranHeader.Get(TranHeader."No.") then begin
                         releasetodoc.Reopen(TranHeader);
-                        TranHeader.delete(true);
+                        // TranHeader.delete(true);
                         message('deleted, ' + Format(TranHeader."No."));
                     end;
                 end else begin
                     salesheader.Reset();
                     salesheader.SetRange("No.", TranHeader."SQ no");
                     if salesheader.find('-') then begin
-                        salesheader.Delete();
+                        // salesheader.Delete();
                         message('deleted, ' + Format(salesheader."No."));
                     end;
                 end;
 
             until TranHeader.Next() = 0;
-        Message(Format(mydatetime));
     end;
 
     [TryFunction]
