@@ -110,100 +110,24 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
         }
         addafter(NewTransferOrder)
         {
-            // action(SalesReturnOrder)
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Make Sales Return Order';
-            //     Image = Sales;
-            //     trigger OnAction()
-            //     var
-            //         SalesQuoteLine: Record "Sales Line";
-            //         SalesOrderLine: Record "Sales Line";
-            //         SalesQuote: Record "Sales header";
-            //         salesreturnorder: Record "Sales header";
-            //         NewReturnOrderNo: Code[20];
-            //         returncode: Record "Return Reason";
-            //         // srocreator: Codeunit "SalesReturnOrderProcessor";
-            //     begin
-            //         // srocreator.CreateSalesReturnOrder(Rec);
-
-            //         // if not returncode.Get(rec."Return Code") then
-            //         //     Error('Return reason not found');
-            //         // SalesReturnOrder.Init();
-            //         // SalesReturnOrder."Document Type" := SalesReturnOrder."Document Type"::"Return Order";
-            //         // SalesReturnOrder."Sell-to Customer no." := rec."Sell-to Customer no.";
-            //         // SalesReturnOrder."Sell-to Customer name 2" := rec."Sell-to Customer name 2";
-            //         // SalesReturnOrder."Sell-to Customer name" := rec."Sell-to Customer name";
-            //         // SalesReturnOrder."Sell-to address" := rec."Sell-to address";
-            //         // SalesReturnOrder."Sell-to address 2" := rec."Sell-to address 2";
-            //         // SalesReturnOrder."assigned user id" := rec."assigned user id";
-            //         // SalesReturnOrder."Your Reference" := rec."Your Reference";
-            //         // SalesReturnOrder."Sell-to city" := rec."Sell-to city";
-            //         // SalesReturnOrder."Sell-to city" := rec."Sell-to city";
-            //         // SalesReturnOrder."Sell-to city" := rec."Sell-to city";
-            //         // SalesReturnOrder."Sell-to contact" := rec."Sell-to contact";
-            //         // SalesReturnOrder."Sell-to post code" := rec."Sell-to post code";
-            //         // SalesReturnOrder."Sell-to county" := rec."Sell-to County";
-            //         // SalesReturnOrder."Sell-to IC Partner Code" := rec."Sell-to IC Partner Code";
-            //         // SalesReturnOrder."Sell-to phone no." := rec."Sell-to phone no.";
-            //         // SalesReturnOrder."Sell-to e-mail" := rec."Sell-to e-mail";
-            //         // SalesReturnOrder."Sell-to contact no." := rec."Sell-to contact no.";
-            //         // SalesReturnOrder."Sell-to Country/Region Code" := rec."Sell-to Country/Region Code";
-            //         // SalesReturnOrder."Customer Posting Group" := rec."Customer Posting Group";
-            //         // SalesReturnOrder."Customer Disc. Group" := rec."Customer Disc. Group";
-            //         // SalesReturnOrder."Customer Price Group" := rec."Customer Price Group";
-            //         // SalesReturnOrder."VAT Bus. Posting Group" := rec."VAT Bus. Posting Group";
-            //         // SalesReturnOrder."Gen. Bus. Posting Group" := rec."Gen. Bus. Posting Group";
-            //         // SalesReturnOrder."Return Code" := rec."Return Code";
-            //         // SalesReturnOrder."External Document No." := rec."External Document No.";
-            //         // SalesReturnOrder."Return Code" := rec."Return Code";
-            //         // SalesReturnOrder."Sell-to Customer Templ. Code" := rec."Sell-to Customer Templ. Code";
-            //         // SalesReturnOrder."bill-to name" := rec."bill-to name";
-            //         // SalesReturnOrder."bill-to name 2" := rec."bill-to name 2";
-            //         // SalesReturnOrder."bill-to city" := rec."bill-to city";
-            //         // SalesReturnOrder."bill-to address 2" := rec."bill-to address 2";
-            //         // SalesReturnOrder."bill-to contact" := rec."bill-to contact";
-            //         // SalesReturnOrder."Bill-to Country/Region Code" := rec."Bill-to Country/Region Code";
-            //         // SalesReturnOrder."Bill-to IC Partner Code" := rec."Bill-to IC Partner Code";
-            //         // SalesReturnOrder."Bill-to Contact No." := rec."Bill-to Contact No.";
-            //         // SalesReturnOrder."Bill-to Customer Templ. Code" := rec."Bill-to Customer Templ. Code";
-            //         // SalesReturnOrder."bill-to post code" := rec."bill-to post code";
-            //         // SalesReturnOrder."bill-to address" := rec."bill-to address";
-            //         // SalesReturnOrder."bill-to Customer no." := rec."bill-to Customer no.";
-            //         // SalesReturnOrder.Insert(true);
-            //         // SalesQuoteLine.SetRange("Document No.", rec."No.");
-            //         // if SalesQuoteLine.FindSet() then begin
-            //         //     repeat
-            //         //         SalesOrderLine.Init();
-            //         //         SalesOrderLine."Document Type" := SalesOrderLine."Document Type"::"Return Order";
-            //         //         SalesOrderLine."Document No." := SalesReturnOrder."No."; // Set the document number
-            //         //         SalesOrderLine."No." := SalesQuoteLine."No."; // Reference the Item No.
-            //         //         SalesOrderLine."type" := SalesQuoteLine."Type";
-            //         //         SalesOrderLine."Posting Group" := SalesQuoteLine."Posting Group";
-            //         //         SalesOrderLine."Customer Price Group" := SalesQuoteLine."Customer Price Group";
-            //         //         SalesOrderLine."Gen. Bus. Posting Group" := SalesQuoteLine."Gen. Bus. Posting Group";
-            //         //         SalesOrderLine."Gen. Prod. Posting Group" := SalesQuoteLine."Gen. Prod. Posting Group";
-            //         //         SalesOrderLine."Tax Group Code" := SalesQuoteLine."Tax Group Code";
-            //         //         SalesOrderLine."Description" := SalesQuoteLine."Description";
-            //         //         SalesOrderLine."VAT Prod. Posting Group" := SalesQuoteLine."VAT Prod. Posting Group";
-            //         //         SalesOrderLine."Quantity" := SalesQuoteLine.Quantity; // Negative quantity for return
-            //         //         SalesOrderLine."Unit Price" := SalesQuoteLine."Unit Price"; // Copy unit price from the quote
-            //         //         SalesOrderLine."Amount" := SalesQuoteLine.Amount; // Copy amount from the quote
-            //         //         SalesOrderLine."Return Reason Code" := SalesQuoteLine."Return Code";
-            //         //         SalesOrderLine."Unit of Measure" := SalesQuoteLine."Unit of Measure";// Copy other fields as needed
-            //         //         SalesOrderLine."Unit of Measure code" := SalesQuoteLine."Unit of Measure code";
-            //         //         SalesOrderLine."Line no." := SalesQuoteLine."Line No.";
-            //         //         SalesOrderLine."Line Amount" := SalesQuoteLine."Line Amount";
-            //         //         SalesOrderLine."Line Discount %" := SalesQuoteLine."Line Discount %";
-            //         //         SalesOrderLine.Validate(Quantity, SalesQuoteLine.Quantity);
-            //         //         SalesOrderLine."Location Code" := SalesQuoteLine."Location Code";
-            //         //         SalesOrderLine.Insert();
-            //         //     until SalesQuoteLine.Next() = 0;
-            //         //     NewReturnOrderNo := SalesReturnOrder."No.";
-            //         //     PAGE.RUN(PAGE::"Sales Return Order", SalesReturnOrder);
-            //         // end;
-            //     end;
-            // }
+            action(SalesReturnOrder)
+            {
+                ApplicationArea = All;
+                Caption = 'Make Sales Return Order';
+                Image = Sales;
+                trigger OnAction()
+                var
+                    SalesQuoteLine: Record "Sales Line";
+                    SalesOrderLine: Record "Sales Line";
+                    SalesQuote: Record "Sales header";
+                    salesreturnorder: Record "Sales header";
+                    NewReturnOrderNo: Code[20];
+                    returncode: Record "Return Reason";
+                    srocreator: Codeunit "SalesReturnOrderProcessor";
+                begin
+                    srocreator.CreateSalesReturnOrder(Rec);
+                end;
+            }
         }
         modify(MakeOrder)
         {

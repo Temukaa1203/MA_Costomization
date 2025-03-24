@@ -9,10 +9,28 @@ pageextension 90916 MakeSRO_fromPSI extends "Posted Sales Invoice"
     {
         addafter("Update Document")
         {
-            action(SalesReturnOrder)
+            // action(SalesReturnOrder)
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Make Sales Return Order';
+            //     Image = Sales;
+            //     trigger OnAction()
+            //     var
+            //         SalesQuoteLine: Record "Sales Line";
+            //         SalesOrderLine: Record "Sales Line";
+            //         SalesQuote: Record "Sales header";
+            //         salesreturnorder: Record "Sales header";
+            //         NewReturnOrderNo: Code[20];
+            //         returncode: Record "Return Reason";
+            //         srocreator: Codeunit "SalesReturnOrderProcessor";
+            //     begin
+            //         srocreator.CreateSalesReturnOrder(Rec);
+            //     end;
+            // }
+            action(SalesQuote)
             {
                 ApplicationArea = All;
-                Caption = 'Make Sales Return Order';
+                Caption = 'Make Sales Quote';
                 Image = Sales;
                 trigger OnAction()
                 var
@@ -22,7 +40,7 @@ pageextension 90916 MakeSRO_fromPSI extends "Posted Sales Invoice"
                     salesreturnorder: Record "Sales header";
                     NewReturnOrderNo: Code[20];
                     returncode: Record "Return Reason";
-                    srocreator: Codeunit "SalesReturnOrderProcessor";
+                    srocreator: Codeunit "SalesQuoteProcessor";
                 begin
                     srocreator.CreateSalesReturnOrder(Rec);
                 end;

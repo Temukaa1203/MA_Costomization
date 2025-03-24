@@ -1,4 +1,4 @@
-codeunit 90912 "SalesReturnOrderProcessor1"
+codeunit 90911 "SalesQuoteProcessor"
 {
     procedure CreateSalesReturnOrder(PSI: Record "Sales Invoice Header")
     var
@@ -7,11 +7,12 @@ codeunit 90912 "SalesReturnOrderProcessor1"
         SalesOrderLine: Record "Sales Line";
         NewReturnOrderNo: Code[20];
         ReturnCode: Record "Return Reason";
+        ReleaseSalesDoc: Codeunit "Release Sales Document";
     begin
         // if not ReturnCode.Get(SalesQuote."Return Code") then
         //     Error('Return reason not found');
         SalesReturnOrder.Init();
-        SalesReturnOrder."Document Type" := SalesReturnOrder."Document Type"::"Return Order";
+        SalesReturnOrder."Document Type" := SalesReturnOrder."Document Type"::Quote;
         SalesReturnOrder.Validate("Sell-to Customer No.", PSI."Sell-to Customer No.");
         SalesReturnOrder.validate("PickPack Ret. Del. Type Code", 'DELIVERY-ITEM');
         SalesReturnOrder.Validate("PickPack Return Reason Code", 'CUSTOMERWISH');
@@ -28,7 +29,10 @@ codeunit 90912 "SalesReturnOrderProcessor1"
         SalesReturnOrder.Validate("PickPack State Code", PSI."PickPack State Code");
         SalesReturnOrder.Validate("PickPack District Code", PSI."PickPack District Code");
         SalesReturnOrder.Validate("PickPack Quarter Code", PSI."PickPack Quarter Code");
+        SalesReturnOrder.Validate("Responsibility Center", PSI."Responsibility Center");
+        SalesReturnOrder.Validate("Salesperson Code", PSI."Salesperson Code");
         SalesReturnOrder.Validate("Bill-to Customer No.", PSI."Bill-to Customer No.");
+        salesreturnorder.validate("Order Type", SalesReturnOrder."Order Type"::"SALES RETURN");
         SalesReturnOrder.Validate("Gen. Bus. Posting Group", 'SRO');
         SalesReturnOrder.Validate("VAT Bus. Posting Group", 'VAT10');
         SalesReturnOrder.Insert(true);
@@ -39,7 +43,7 @@ codeunit 90912 "SalesReturnOrderProcessor1"
                 SalesOrderLine.Init();
                 SalesOrderLine."Document No." := SalesReturnOrder."No.";
                 SalesOrderLine.validate(Type, SalesQuoteLine.Type);
-                SalesOrderLine.Validate("Document Type", SalesReturnOrder."Document Type"::"Return Order");
+                SalesOrderLine.Validate("Document Type", SalesReturnOrder."Document Type"::Quote);
                 SalesOrderLine.validate("Sell-to Customer No.", SalesReturnOrder."Sell-to Customer No.");
 
                 SalesOrderLine.validate("No.", SalesQuoteLine."No.");
@@ -67,11 +71,15 @@ codeunit 90912 "SalesReturnOrderProcessor1"
                 SalesOrderLine.Validate("Line Amount", SalesQuoteLine."Line Amount");
                 SalesOrderLine.Validate("Line Discount %", SalesQuoteLine."Line Discount %");
                 SalesOrderLine.Validate("Location Code", SalesQuoteLine."Location Code");
+                SalesOrderLine.Validate("Disc. Unit Price", SalesQuoteLine."Disc. Unit Price");
+
                 SalesOrderLine.Insert();
             until SalesQuoteLine.Next() = 0;
             SalesReturnOrder.Modify();
             Commit();
-            page.Run(page::"Sales Return Order", SalesReturnOrder);
+            // ReleaseSalesDoc.PerformManualRelease(SalesReturnOrder);
+            page.Run(page::"Sales Quote", SalesReturnOrder);
+
         end;
 
     end;

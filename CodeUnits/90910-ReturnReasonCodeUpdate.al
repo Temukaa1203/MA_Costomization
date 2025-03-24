@@ -11,7 +11,7 @@ codeunit 90910 "Return Reason Code Update"
             SalesLine.SetRange("Document No.", Rec."No.");
             if SalesLine.FindSet() then begin
                 repeat
-                    SalesLine.Validate("Return Reason Code", Rec."Return Code");
+                    SalesLine.Validate("Return Code", Rec."Return Code");
                     SalesLine.Modify();
                 until SalesLine.Next() = 0;
             end;

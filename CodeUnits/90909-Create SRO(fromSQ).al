@@ -1,11 +1,12 @@
-codeunit 90912 "SalesReturnOrderProcessor1"
+codeunit 90909 "SalesReturnOrderProcessor"
 {
-    procedure CreateSalesReturnOrder(PSI: Record "Sales Invoice Header")
+    procedure CreateSalesReturnOrder(PSI: Record "Sales Header")
     var
-        SalesQuoteLine: Record "Sales Invoice Line";
+        SalesQuoteLine: Record "Sales Line";
         SalesReturnOrder: Record "Sales Header";
         SalesOrderLine: Record "Sales Line";
         NewReturnOrderNo: Code[20];
+        ReleaseSalesDoc: Codeunit "Release Sales Document";
         ReturnCode: Record "Return Reason";
     begin
         // if not ReturnCode.Get(SalesQuote."Return Code") then
@@ -16,10 +17,11 @@ codeunit 90912 "SalesReturnOrderProcessor1"
         SalesReturnOrder.validate("PickPack Ret. Del. Type Code", 'DELIVERY-ITEM');
         SalesReturnOrder.Validate("PickPack Return Reason Code", 'CUSTOMERWISH');
         SalesReturnOrder.Validate("Your Reference", PSI."Your Reference");
+        SalesReturnOrder.Validate("Salesperson Code", PSI."Salesperson Code");
         SalesReturnOrder.Validate("Customer Posting Group", PSI."Customer Posting Group");
         SalesReturnOrder.Validate("Customer Disc. Group", PSI."Customer Disc. Group");
         SalesReturnOrder.Validate("Customer Price Group", PSI."Customer Price Group");
-        SalesReturnOrder.Validate("PickPack Return Code", PSI."PickPack order Code");
+        SalesReturnOrder.Validate("PickPack Return Code", PSI."PickPack return Code");
         SalesReturnOrder.Validate("External Document No.", PSI."External Document No.");
         SalesReturnOrder.Validate("PickPack Delivery Email", PSI."PickPack Delivery Email");
         SalesReturnOrder.Validate("PickPack Return Name", PSI."PickPack Delivery Name");
@@ -31,6 +33,8 @@ codeunit 90912 "SalesReturnOrderProcessor1"
         SalesReturnOrder.Validate("Bill-to Customer No.", PSI."Bill-to Customer No.");
         SalesReturnOrder.Validate("Gen. Bus. Posting Group", 'SRO');
         SalesReturnOrder.Validate("VAT Bus. Posting Group", 'VAT10');
+        SalesReturnOrder.Validate("Work Description", PSI."Work Description");
+        SalesReturnOrder.validate("Return Code", PSI."Return Code");
         SalesReturnOrder.Insert(true);
         SalesQuoteLine.SetRange("Document No.", PSI."No.");
 
@@ -60,17 +64,21 @@ codeunit 90912 "SalesReturnOrderProcessor1"
                 SalesOrderLine.Validate("Description", SalesQuoteLine."Description");
                 SalesOrderLine.Validate("VAT Prod. Posting Group", SalesQuoteLine."VAT Prod. Posting Group");
                 SalesOrderLine.Validate("Quantity", SalesQuoteLine.Quantity);
-                SalesOrderLine.Validate("Unit Price", SalesQuoteLine."Unit Price");
+
                 SalesOrderLine.Validate("Amount", SalesQuoteLine.Amount);
                 SalesOrderLine.Validate("Unit of Measure", SalesQuoteLine."Unit of Measure");
                 SalesOrderLine.Validate("Unit of Measure code", SalesQuoteLine."Unit of Measure code");
                 SalesOrderLine.Validate("Line Amount", SalesQuoteLine."Line Amount");
                 SalesOrderLine.Validate("Line Discount %", SalesQuoteLine."Line Discount %");
                 SalesOrderLine.Validate("Location Code", SalesQuoteLine."Location Code");
+                SalesOrderLine.Validate("Disc. Unit Price", SalesQuoteLine."Disc. Unit Price");
+                SalesOrderLine.validate("Return Reason Code", SalesQuoteLine."Return Code");
+                SalesOrderLine.Validate("Unit Price", SalesQuoteLine."Unit Price");
                 SalesOrderLine.Insert();
             until SalesQuoteLine.Next() = 0;
             SalesReturnOrder.Modify();
             Commit();
+            ReleaseSalesDoc.PerformManualRelease(SalesReturnOrder);
             page.Run(page::"Sales Return Order", SalesReturnOrder);
         end;
 

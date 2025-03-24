@@ -10,6 +10,10 @@ pageextension 90918 standardkg_SOLine extends "Sales Order Subform"
                 Editable = false;
             }
         }
+        modify("Unit Price")
+        {
+            Editable = false;
+        }
     }
 
     actions
