@@ -15,6 +15,12 @@ pageextension 90919 SalesRetOrd extends "Sales Return Order"
                     CurrPage.Update(false);
                 end;
             }
+            field("SQ no."; Rec."SQ no.")
+            {
+                ApplicationArea = All;
+                Caption = 'SQ no.';
+                Editable = false;
+            }
         }
         modify("PickPack return Code")
         {

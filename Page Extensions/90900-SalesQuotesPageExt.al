@@ -16,6 +16,16 @@ pageextension 90900 SalesQuoteExt extends "Sales Quote"
                     SetTransferFromtoCode(); // Call to set Transfer-from Code when page is opened.
                 end;
             }
+            field("SRO error"; Rec."SRO error")
+            {
+                ApplicationArea = All;
+                Editable = false;
+            }
+            field("SO Error"; Rec."SO Error")
+            {
+                ApplicationArea = All;
+                Editable = false;
+            }
             // field(SystemCreatedBy; GetUserNameFromSecurityId(Rec.SystemCreatedBy))
             // {
             //     ApplicationArea = all;

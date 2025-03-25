@@ -1,5 +1,42 @@
-codeunit 90909 "SalesReturnOrderProcessor"
+codeunit 90915 SRO_job
 {
+    trigger OnRun()
+    begin
+        createsro();
+    end;
+
+    local procedure createsro()
+    var
+        mydatetime: DateTime;
+        mydate: date;
+        createsroCodeunit: Codeunit SalesReturnOrderProcessor;
+        salesheader: Record "Sales Header";
+        sro: record "Sales Header";
+    begin
+        mydate := CalcDate('<-1D>', Today);
+        mydatetime := CreateDateTime(mydate, 0T);
+        SalesHeader.Reset();
+        SalesHeader.SetRange(SystemCreatedAt, mydatetime, CurrentDateTime);
+        SalesHeader.SetFilter("Document Type", '=%1', SalesHeader."Document Type"::Quote);
+        SalesHeader.SetFilter(Status, '=%1', SalesHeader.Status::Released);
+        salesheader.SetFilter("Order Type", '=%1', SalesHeader."Order Type"::"SALES RETURN");
+        salesheader.SetFilter("Responsibility Center", '=%1', 'SALESM');
+        if salesheader.Find('-') then begin
+            Message(Format(salesheader.Count));
+            repeat
+                if not CreateSalesReturnOrder(salesheader) then begin
+                    salesheader."SRO Error" := GetLastErrorText();
+                    salesheader.Modify();
+                    sro.Reset();
+                    sro.SetRange("SQ no.", salesheader."No.");
+                    if sro.FindSet() then begin
+                        sro.delete(true);
+                    end;
+                end;
+            until salesheader.Next() = 0;
+        end;
+    end;
+
     [TryFunction]
     procedure CreateSalesReturnOrder(PSI: Record "Sales Header")
     var
@@ -14,7 +51,6 @@ codeunit 90909 "SalesReturnOrderProcessor"
         //     Error('Return reason not found');
         SalesReturnOrder.Init();
         SalesReturnOrder."Document Type" := SalesReturnOrder."Document Type"::"Return Order";
-
         SalesReturnOrder.Validate("Sell-to Customer No.", PSI."Sell-to Customer No.");
         SalesReturnOrder.validate("PickPack Ret. Del. Type Code", 'DELIVERY-ITEM');
         SalesReturnOrder.Validate("PickPack Return Reason Code", 'CUSTOMERWISH');
@@ -83,9 +119,12 @@ codeunit 90909 "SalesReturnOrderProcessor"
             Commit();
             ReleaseSalesDoc.PerformManualRelease(SalesReturnOrder);
             psi.delete(true);
-            page.Run(page::"Sales Return Order", SalesReturnOrder);
+            // page.Run(page::"Sales Return Order", SalesReturnOrder);
 
         end;
 
     end;
+
+    var
+        myInt: Integer;
 }

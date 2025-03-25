@@ -44,6 +44,21 @@ tableextension 90900 SalesQuoteHeaderExt extends "Sales Header"
             NotBlank = true;
             DataClassification = ToBeClassified;
         }
+        field(90911; "SRO error"; text[2000])
+        {
+            Caption = 'SRO error';
+            DataClassification = ToBeClassified;
+        }
+        field(90912; "SQ no."; Code[20])
+        {
+            Caption = 'SQ no.';
+            DataClassification = ToBeClassified;
+        }
+        field(90913; "SO Error"; Text[2000])
+        {
+            Caption = 'SO Error';
+            DataClassification = ToBeClassified;
+        }
         modify("Sell-to Customer No.")
         {
             trigger OnAfterValidate()
